@@ -10,15 +10,17 @@ useHead({
   ],
   htmlAttrs: {
     lang: "pt-BR",
-    "data-scroll-behavior": "smooth",
+  },
+  bodyAttrs: {
+    class: "scroll-smooth",
   },
 });
 </script>
 
 <template>
-  <main class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col">
     <slot />
 
     <!-- TODO: NotificationManagementWidget -->
-  </main>
+  </div>
 </template>

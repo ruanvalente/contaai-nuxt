@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const email = ref('')
+const email = ref("");
 </script>
 
 <template>
@@ -8,8 +8,8 @@ const email = ref('')
       <SharedUiAuthLogo />
 
       <SharedUiAuthHeader
-        title="Forgot your password?"
-        subtitle="Enter your email and we'll send you a reset link"
+        title="Esqueceu sua senha?"
+        subtitle="Digite seu email e enviaremos um link para redefinir sua senha."
       />
 
       <form class="space-y-6">
@@ -18,21 +18,25 @@ const email = ref('')
           v-model="email"
           label="Email"
           type="email"
-          placeholder="you@email.com"
+          placeholder="seu@email.com"
         />
 
-        <SharedUiButton type="submit">
-          Send Reset Link
+        <SharedUiButton
+          class="w-full px-5 py-2 text-md"
+          variant="primary"
+          type="submit"
+        >
+          Enviar link de redefinição
         </SharedUiButton>
       </form>
 
       <p class="mt-10 text-center text-sm text-[#6B7280]">
-        Remember your password?
+        Lembra sua senha?
         <NuxtLink
           to="/auth/login"
           class="font-medium text-[#2563EB] transition-colors hover:underline"
         >
-          Back to sign in
+          Voltar para entrar
         </NuxtLink>
       </p>
     </SharedUiCard>

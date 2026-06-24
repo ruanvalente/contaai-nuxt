@@ -2,11 +2,13 @@
 interface Props {
   type?: 'button' | 'submit'
   disabled?: boolean
+  variant?: 'primary' | 'secondary'
 }
 
 withDefaults(defineProps<Props>(), {
   type: 'button',
   disabled: false,
+  variant: 'primary',
 })
 </script>
 
@@ -14,7 +16,12 @@ withDefaults(defineProps<Props>(), {
   <button
     :type="type"
     :disabled="disabled"
-    class="w-full h-16 rounded-full bg-[#C9A87C] text-base font-semibold text-white transition-colors hover:bg-[#B8956A] disabled:cursor-not-allowed disabled:opacity-50"
+    :class="[
+      'inline-flex items-center justify-center rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+      variant === 'primary'
+        ? 'bg-[#C9A87C] text-white hover:bg-[#B8956A]'
+        : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50',
+    ]"
   >
     <slot />
   </button>
