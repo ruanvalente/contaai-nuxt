@@ -1,6 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts']
-})
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/google-fonts"],
+  googleFonts: {
+    families: {
+      Inter: [400, 500, 600, 700],
+      "Playfair Display": [600, 700],
+    },
+
+    display: "swap",
+    preload: true,
+    prefetch: true,
+    download: true,
+    inject: true,
+  },
+});
