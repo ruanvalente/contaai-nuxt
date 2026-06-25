@@ -13,26 +13,15 @@ const emit = defineEmits<{
   bookSelect: [book: BookListItem]
 }>()
 
-const books = ref<BookListItem[]>(props.initialBooks)
 const selectedCategory = ref<Category>('All')
-const isLoading = ref(false)
 
-const handleCategoryChange = async (category: Category) => {
+const books = computed(() => {
+  if (selectedCategory.value === 'All') return props.initialBooks
+  return props.initialBooks.filter(book => book.category === selectedCategory.value)
+})
+
+const handleCategoryChange = (category: Category) => {
   selectedCategory.value = category
-
-  if (category === 'All') {
-    books.value = props.initialBooks
-    return
-  }
-
-  isLoading.value = true
-  try {
-    books.value = props.initialBooks.filter(book => book.category === category)
-  } catch (error) {
-    console.error('Failed to filter books:', error)
-  } finally {
-    isLoading.value = false
-  }
 }
 </script>
 
@@ -66,17 +55,7 @@ const handleCategoryChange = async (category: Category) => {
         </div>
       </div>
 
-      <div v-if="isLoading" class="flex items-center justify-center gap-4 md:gap-8 overflow-x-auto pb-8 px-4">
-        <div v-for="i in 5" :key="i" class="shrink-0 animate-pulse">
-          <div class="w-32 sm:w-40">
-            <div class="bg-gray-300 rounded-lg w-full aspect-[2/3]" />
-            <div class="mt-2 h-4 bg-gray-300 rounded w-3/4" />
-            <div class="mt-1 h-3 bg-gray-200 rounded w-1/2" />
-          </div>
-        </div>
-      </div>
-
-      <div v-else-if="books.length > 0" class="flex items-center justify-center gap-4 md:gap-8 overflow-x-auto pb-8 px-4 scrollbar-hide">
+      <div v-if="books.length > 0" class="flex items-center justify-center gap-4 md:gap-8 overflow-x-auto pb-8 px-4 scrollbar-hide">
         <div
           v-for="(book, index) in books.slice(0, 12)"
           :key="book.id"

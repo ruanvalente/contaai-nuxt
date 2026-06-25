@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  title: "Recuperar Senha",
+})
+
 const email = ref("");
 </script>
 

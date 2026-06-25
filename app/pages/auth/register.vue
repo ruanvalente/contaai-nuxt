@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  title: "Criar Conta",
+})
+
 const name = ref("");
 const email = ref("");
 const password = ref("");

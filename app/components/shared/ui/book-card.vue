@@ -3,7 +3,7 @@ interface Props {
   id: string
   title: string
   author: string
-  coverUrl: string
+  coverUrl?: string
   coverColor: string
   rating: number | null
   isFeatured?: boolean
