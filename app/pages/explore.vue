@@ -3,6 +3,11 @@ import type { BookListItem } from '~/types/book.entity'
 import { CATEGORIES } from '~/types/book.entity'
 import type { Category } from '~/types/book.entity'
 
+definePageMeta({
+  title: "Explorar",
+  keepalive: true,
+})
+
 const router = useRouter()
 
 const books = ref<BookListItem[]>([])

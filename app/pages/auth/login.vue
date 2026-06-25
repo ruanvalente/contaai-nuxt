@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  title: "Entrar",
+})
+
 const email = ref("");
 const password = ref("");
 </script>

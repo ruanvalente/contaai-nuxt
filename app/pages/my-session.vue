@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { BookListItem } from '~/types/book.entity'
 
+definePageMeta({
+  title: "Minha Sessão",
+})
+
 const router = useRouter()
 const { user, isInitialized, isLoading, initialize } = useAuthStore()
 

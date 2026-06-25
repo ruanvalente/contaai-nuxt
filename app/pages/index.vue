@@ -1,63 +1,52 @@
 <script setup lang="ts">
-import type { BookListItem, Book } from '~/types/book.entity'
+import type { Book, BookListItem } from "~/types/book.entity";
+import { mapToBook } from "~/types/book.entity";
 
-const router = useRouter()
-const { user, isInitialized, isLoading, initialize } = useAuthStore()
+definePageMeta({
+  title: "ContaAI",
+})
 
-const selectedBook = ref<Book | null>(null)
+const router = useRouter();
+const { user, isInitialized, initialize } = useAuthStore();
 
-const initialBooks = ref<BookListItem[]>([])
-
-function mapToBook(book: BookListItem): Book {
-  return {
-    id: book.id,
-    title: book.title,
-    author: book.author,
-    coverUrl: book.coverUrl || '',
-    coverColor: book.coverColor,
-    rating: book.rating || 0,
-    description: '',
-    category: book.category,
-    pages: 0,
-    ratingCount: 0,
-    reviewCount: 0,
-    createdAt: new Date(),
-  }
-}
+const selectedBook = ref<Book | null>(null);
+const { books } = useBooks();
 
 onMounted(() => {
-  initialize()
-})
+  initialize();
+});
 
 watch([user, isInitialized], ([newUser, initialized]) => {
   if (initialized && newUser) {
-    router.replace('/dashboard')
+    router.replace("/dashboard");
   }
-})
+});
 
 const handleBookSelect = (book: BookListItem) => {
-  selectedBook.value = mapToBook(book)
-}
+  selectedBook.value = mapToBook(book);
+};
 
 const handleClearSelection = () => {
-  selectedBook.value = null
-}
+  selectedBook.value = null;
+};
 </script>
 
 <template>
-  <div v-if="!isInitialized || isLoading" class="min-h-screen bg-primary-100" />
-
-  <Transition name="page">
-    <main v-if="isInitialized && !isLoading" class="min-h-screen bg-primary-100">
+  <main class="min-h-screen bg-primary-100">
     <LandingHeader />
     <LandingHero />
 
-    <LandingBooksShowcase :initial-books="initialBooks" @book-select="handleBookSelect" />
+    <LandingBooksShowcase
+      :initial-books="books"
+      @book-select="handleBookSelect"
+    />
 
     <section id="community" class="py-20 bg-primary-100 scroll-mt-20">
       <SharedUiContainer>
         <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-display font-semibold text-gray-900 mb-4">
+          <h2
+            class="text-3xl md:text-4xl font-display font-semibold text-gray-900 mb-4"
+          >
             Comunidade
           </h2>
           <p class="text-gray-700 max-w-xl mx-auto">
@@ -67,10 +56,22 @@ const handleClearSelection = () => {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           <div
             v-for="item in [
-              { title: 'Fóruns de Discussão', desc: 'Participe de conversas sobre literatura' },
-              { title: 'Eventos Literários', desc: 'Workshops e encontros online' },
-              { title: 'Feedback entre Autores', desc: 'Receba e ofereça críticas construtivas' },
-              { title: 'Desafios de Escrita', desc: 'Participe de desafios mensais' },
+              {
+                title: 'Fóruns de Discussão',
+                desc: 'Participe de conversas sobre literatura',
+              },
+              {
+                title: 'Eventos Literários',
+                desc: 'Workshops e encontros online',
+              },
+              {
+                title: 'Feedback entre Autores',
+                desc: 'Receba e ofereça críticas construtivas',
+              },
+              {
+                title: 'Desafios de Escrita',
+                desc: 'Participe de desafios mensais',
+              },
             ]"
             :key="item.title"
             class="bg-accent-100 rounded-lg p-6 hover:bg-accent-100/80 transition-colors cursor-pointer"
@@ -87,7 +88,9 @@ const handleClearSelection = () => {
     <section id="contribute" class="py-20 bg-primary-200 scroll-mt-20">
       <SharedUiContainer>
         <div class="text-center">
-          <h2 class="text-3xl md:text-4xl font-display font-semibold text-gray-900 mb-4">
+          <h2
+            class="text-3xl md:text-4xl font-display font-semibold text-gray-900 mb-4"
+          >
             Contribua
           </h2>
           <p class="text-gray-700 max-w-xl mx-auto mb-8">
@@ -105,7 +108,9 @@ const handleClearSelection = () => {
 
     <footer class="py-12 bg-primary-300">
       <SharedUiContainer>
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-6"
+        >
           <div>
             <span class="text-xl font-display font-bold text-gray-900">
               Conta<span class="text-accent-500">AI</span>
@@ -115,9 +120,21 @@ const handleClearSelection = () => {
             </p>
           </div>
           <div class="flex gap-6">
-            <a href="#" class="text-gray-700 hover:text-accent-500 transition-colors text-sm">Termos</a>
-            <a href="#" class="text-gray-700 hover:text-accent-500 transition-colors text-sm">Privacidade</a>
-            <a href="#" class="text-gray-700 hover:text-accent-500 transition-colors text-sm">Contato</a>
+            <a
+              href="#"
+              class="text-gray-700 hover:text-accent-500 transition-colors text-sm"
+              >Termos</a
+            >
+            <a
+              href="#"
+              class="text-gray-700 hover:text-accent-500 transition-colors text-sm"
+              >Privacidade</a
+            >
+            <a
+              href="#"
+              class="text-gray-700 hover:text-accent-500 transition-colors text-sm"
+              >Contato</a
+            >
           </div>
         </div>
         <div class="mt-8 pt-8 border-t border-gray-700/20 text-center">
@@ -128,20 +145,6 @@ const handleClearSelection = () => {
       </SharedUiContainer>
     </footer>
 
-    <BookDetailsModal
-      :book="selectedBook"
-      @close="handleClearSelection"
-    />
+    <LazyBookDetailsModal :book="selectedBook" @close="handleClearSelection" />
   </main>
-  </Transition>
 </template>
-
-<style scoped>
-.page-enter-active {
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(12px);
-}
-</style>
