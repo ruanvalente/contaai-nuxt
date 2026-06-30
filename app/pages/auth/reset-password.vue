@@ -1,47 +1,34 @@
 <script setup lang="ts">
 definePageMeta({
-  title: "Criar Conta",
-  middleware: 'guest',
+  title: "Redefinir Senha",
 })
 
 const router = useRouter()
-const { register, loading, error, clearError } = useAuthStore()
+const client = useSupabaseClient()
+const { updatePassword, loading, error, clearError } = useAuthStore()
 
-const name = ref('')
-const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const isRecovery = ref(false)
 const successMessage = ref('')
 
 const formErrors = reactive({
-  name: '',
-  email: '',
   password: '',
   confirmPassword: '',
 })
 
+onMounted(async () => {
+  const { data: { session } } = await client.auth.getSession()
+  isRecovery.value = !!session
+})
+
 function validate(): boolean {
   let valid = true
-  formErrors.name = ''
-  formErrors.email = ''
   formErrors.password = ''
   formErrors.confirmPassword = ''
 
-  if (!name.value.trim()) {
-    formErrors.name = 'Nome é obrigatório'
-    valid = false
-  }
-
-  if (!email.value) {
-    formErrors.email = 'Email é obrigatório'
-    valid = false
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    formErrors.email = 'Email inválido'
-    valid = false
-  }
-
   if (!password.value) {
-    formErrors.password = 'Senha é obrigatória'
+    formErrors.password = 'Nova senha é obrigatória'
     valid = false
   } else if (password.value.length < 8) {
     formErrors.password = 'Mínimo de 8 caracteres'
@@ -49,7 +36,7 @@ function validate(): boolean {
   }
 
   if (!confirmPassword.value) {
-    formErrors.confirmPassword = 'Confirme sua senha'
+    formErrors.confirmPassword = 'Confirme a nova senha'
     valid = false
   } else if (password.value !== confirmPassword.value) {
     formErrors.confirmPassword = 'Senhas não coincidem'
@@ -64,17 +51,9 @@ async function handleSubmit() {
   if (!validate()) return
 
   try {
-    const data = await register({
-      name: name.value.trim(),
-      email: email.value,
-      password: password.value,
-    })
-
-    if (data.session) {
-      router.push('/dashboard')
-    } else {
-      successMessage.value = 'Conta criada! Verifique seu email para confirmar o cadastro.'
-    }
+    await updatePassword({ password: password.value })
+    successMessage.value = 'Senha redefinida com sucesso!'
+    setTimeout(() => router.push('/auth/login'), 2000)
   } catch {
     // error is set by the store
   }
@@ -87,8 +66,15 @@ async function handleSubmit() {
       <SharedUiAuthLogo />
 
       <SharedUiAuthHeader
-        title="Crie a sua conta"
-        subtitle="Comece sua jornada com ContaAI"
+        v-if="isRecovery"
+        title="Redefinir senha"
+        subtitle="Escolha uma nova senha para sua conta."
+      />
+
+      <SharedUiAuthHeader
+        v-else
+        title="Link inválido"
+        subtitle="Este link de redefinição é inválido ou expirou."
       />
 
       <div
@@ -106,38 +92,16 @@ async function handleSubmit() {
         {{ successMessage }}
       </div>
 
-      <form class="space-y-6" @submit.prevent="handleSubmit">
+      <form
+        v-if="isRecovery && !successMessage"
+        class="space-y-6"
+        @submit.prevent="handleSubmit"
+      >
         <div>
           <SharedUiInput
-            id="name"
-            v-model="name"
-            label="Nome completo"
-            type="text"
-            placeholder="Jane Doe"
-          />
-          <p v-if="formErrors.name" class="mt-1.5 text-sm text-red-500">
-            {{ formErrors.name }}
-          </p>
-        </div>
-
-        <div>
-          <SharedUiInput
-            id="email"
-            v-model="email"
-            label="Email"
-            type="email"
-            placeholder="seu@email.com"
-          />
-          <p v-if="formErrors.email" class="mt-1.5 text-sm text-red-500">
-            {{ formErrors.email }}
-          </p>
-        </div>
-
-        <div>
-          <SharedUiInput
-            id="password"
+            id="new-password"
             v-model="password"
-            label="Senha"
+            label="Nova senha"
             type="password"
             placeholder="••••••••"
           />
@@ -150,7 +114,7 @@ async function handleSubmit() {
           <SharedUiInput
             id="confirm-password"
             v-model="confirmPassword"
-            label="Confirmar senha"
+            label="Confirmar nova senha"
             type="password"
             placeholder="••••••••"
           />
@@ -175,17 +139,28 @@ async function handleSubmit() {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
-          Criar conta
+          Redefinir senha
         </SharedUiButton>
       </form>
 
-      <p class="mt-10 text-center text-sm text-[#6B7280]">
-        Já tem uma conta?
+      <div v-if="!isRecovery && !successMessage" class="text-center">
+        <NuxtLink
+          to="/auth/forgot-password"
+          class="text-sm text-[#2563EB] transition-colors hover:underline"
+        >
+          Solicitar novo link
+        </NuxtLink>
+      </div>
+
+      <p
+        v-if="!successMessage"
+        class="mt-10 text-center text-sm text-[#6B7280]"
+      >
         <NuxtLink
           to="/auth/login"
           class="font-medium text-[#2563EB] transition-colors hover:underline"
         >
-          Entrar
+          Voltar para entrar
         </NuxtLink>
       </p>
     </SharedUiCard>

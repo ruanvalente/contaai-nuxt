@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const supabase = await serverSupabaseClient(event)
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${getRequestURL(event).origin}/auth/login`,
+    redirectTo: `${getRequestURL(event).origin}/auth/reset-password`,
   })
 
   if (error) {
