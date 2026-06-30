@@ -8,9 +8,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: "Não autenticado" })
   }
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("id, name, avatar_url, bio, created_at, updated_at")
+  const { data: profile, error } = await supabase
+    .from("user_profiles")
+    .select("*")
     .eq("id", user.id)
     .maybeSingle()
 
@@ -22,6 +22,6 @@ export default defineEventHandler(async (event) => {
     id: user.id,
     email: user.email,
     name: user.user_metadata?.full_name ?? null,
-    profile: data ?? null,
+    profile: profile ?? null,
   }
 })

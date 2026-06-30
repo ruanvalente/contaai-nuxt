@@ -3,9 +3,9 @@ import type { BookListItem } from '~/types/book.entity'
 
 definePageMeta({
   title: "Minha Sessão",
+  middleware: 'auth',
 })
 
-const router = useRouter()
 const { user, isInitialized, isLoading, initialize } = useAuthStore()
 
 const favoriteBooks = ref<BookListItem[]>([])
@@ -15,16 +15,9 @@ onMounted(() => {
   initialize()
 })
 
-watch(isInitialized, (val) => {
-  if (val && !user.value) {
-    router.push('/auth/login')
-  }
-})
-
 onMounted(async () => {
   dataLoading.value = true
   try {
-    // TODO: fetch user session data
     await new Promise(r => setTimeout(r, 600))
   } finally {
     dataLoading.value = false
