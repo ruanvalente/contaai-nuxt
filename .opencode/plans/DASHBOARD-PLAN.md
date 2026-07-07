@@ -2,7 +2,7 @@
 
 > Documento de planejamento e tracking para implementação do Dashboard do Autor na plataforma ContaAI.
 >
-> **Status:** ✅ Concluído (13/07/2026)
+> **Status:** Em andamento 07/07/2026
 
 ---
 
@@ -12,23 +12,23 @@
 
 **Arquivo:** `app/types/book.entity.ts`
 
-- [ ] Substituir `BookCategory` para categorias em português
-- [ ] Atualizar arrays `CATEGORIES` e `BOOK_CATEGORIES`
+- [x] Substituir `BookCategory` para categorias em português
+- [x] Atualizar arrays `CATEGORIES` e `BOOK_CATEGORIES`
 
 ### 1.2 Atualizar categorias (server)
 
 **Arquivo:** `server/domain/entities/book.entity.ts`
 
-- [ ] Mesma atualização de categorias do client
+- [x] Mesma atualização de categorias do client
 
 ### 1.3 Criar tipos do dashboard
 
 **Arquivo:** `app/types/dashboard.ts`
 
-- [ ] Criar interface `UserMetrics`
-- [ ] Criar interface `PlatformMetrics`
-- [ ] Criar interface `CreateBookPayload`
-- [ ] Criar constantes de cores predefinidas
+- [x] Criar interface `UserMetrics`
+- [x] Criar interface `PlatformMetrics`
+- [x] Criar interface `CreateBookPayload`
+- [x] Criar constantes de cores predefinidas
 
 ---
 
