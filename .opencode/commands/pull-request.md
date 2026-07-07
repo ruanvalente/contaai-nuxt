@@ -2,7 +2,7 @@
 
 Cria automaticamente um Pull Request completo e padronizado, com:
 
-- Branch criada a partir da `master`
+- Branch criada a partir da `develop`
 - Título semântico
 - Descrição estruturada
 - Checklist de testes
@@ -11,8 +11,8 @@ Cria automaticamente um Pull Request completo e padronizado, com:
 ### IMPORTANTE:
 
 > O conteúdo do PR (título + descrição) deve ser sempre em inglês.
-> A branch de origem será criada automaticamente a partir da `master`.
-> O PR sempre terá como destino a branch `master`.
+> A branch de origem será criada automaticamente a partir da `develop`.
+> O PR sempre terá como destino a branch `develop`.
 
 ### Como Usar
 
@@ -28,12 +28,12 @@ Exemplo
 
 ## Fluxo do Agente
 
-### 1. Criar branch a partir da master
+### 1. Criar branch a partir da develop
 
 ```bash
-git checkout master
-git pull origin master
-git checkout -b <branch-name> master
+git checkout develop
+git pull origin develop
+git checkout -b <branch-name> develop
 ```
 
 ### 2. Analisar mudanças
@@ -101,5 +101,5 @@ Ser extremamente descritivo e objetivo na sua descrição também em inglês.
 - Não gerar título genérico
 - Usar padrão semântico
 - Ser claro e objetivo
-- Branch sempre criada a partir da `master`
-- PR sempre aponta para `master`
+- Branch sempre criada a partir da `develop`
+- PR sempre aponta para `develop`

@@ -22,4 +22,11 @@ logs
 .env
 .env.*
 !.env.example
+
+# supabase
+supabase/.branches/
+supabase/.temp/
+supabase/supabase/
+supabase/snippets/
+*.sql.bak
 supabase/.temp/

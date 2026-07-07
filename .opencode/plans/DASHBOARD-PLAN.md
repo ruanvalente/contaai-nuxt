@@ -38,37 +38,37 @@
 
 **Arquivo:** `server/api/user/books/index.get.ts`
 
-- [ ] GET `/api/user/books` — retorna livros do `user_books`
+- [x] GET `/api/user/books` — retorna livros do `user_books`
 
 ### 2.2 Criar livro do usuário
 
 **Arquivo:** `server/api/user/books/index.post.ts`
 
-- [ ] POST `/api/user/books` — insere na tabela `user_books`
+- [x] POST `/api/user/books` — insere na tabela `user_books`
 
 ### 2.3 Upload de capa
 
 **Arquivo:** `server/api/user/books/cover.post.ts`
 
-- [ ] POST `/api/user/books/cover` — upload com validação
+- [x] POST `/api/user/books/cover` — upload com validação
 
 ### 2.4 Deletar livro
 
 **Arquivo:** `server/api/user/books/[id].delete.ts`
 
-- [ ] DELETE `/api/user/books/[id]`
+- [x] DELETE `/api/user/books/[id]`
 
 ### 2.5 Estatísticas do usuário
 
 **Arquivo:** `server/api/user/stats.get.ts`
 
-- [ ] GET `/api/user/stats` — métricas do usuário (publishedBooks/drafts reais, demais mock)
+- [x] GET `/api/user/stats` — métricas do usuário (publishedBooks/drafts reais, demais mock)
 
 ### 2.6 Estatísticas da plataforma
 
 **Arquivo:** `server/api/platform/stats.get.ts`
 
-- [ ] GET `/api/platform/stats` — métricas da plataforma (totalAuthors/totalBooks reais, demais mock)
+- [x] GET `/api/platform/stats` — métricas da plataforma (totalAuthors/totalBooks reais, demais mock)
 
 ---
 
