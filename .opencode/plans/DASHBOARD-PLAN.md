@@ -115,80 +115,80 @@
 
 **Arquivo:** `app/components/dashboard/header.vue`
 
-- [ ] Logo + hamburger (mobile) + avatar + notificações placeholder
+- [x] Logo + hamburger (mobile) + avatar + notificações placeholder
 
 ### 5.2 DashboardSidebar
 
 **Arquivo:** `app/components/dashboard/sidebar.vue`
 
-- [ ] Nav items: Dashboard, Explorar, Minha Sessão
-- [ ] Logout, item ativo, mobile overlay
+- [x] Nav items: Dashboard, Explorar, Minha Sessão
+- [x] Logout, item ativo, mobile overlay
 
 ### 5.3 DashboardStats
 
 **Arquivo:** `app/components/dashboard/stats.vue`
 
-- [ ] Grid métricas usuário + plataforma, skeleton loading
+- [x] Grid métricas usuário + plataforma, skeleton loading
 
 ### 5.4 DashboardBookCard
 
 **Arquivo:** `app/components/dashboard/book-card.vue`
 
-- [ ] Capa (cor/título ou imagem), status badge, categoria, data, ações (editar/excluir)
+- [x] Capa (cor/título ou imagem), status badge, categoria, data, ações (editar/excluir)
 
 ### 5.5 BookGrid
 
 **Arquivo:** `app/components/dashboard/book-grid.vue`
 
-- [ ] Grid responsivo, skeleton loading
+- [x] Grid responsivo, skeleton loading
 
 ### 5.6 EmptyBooks
 
 **Arquivo:** `app/components/dashboard/empty-books.vue`
 
-- [ ] Ilustração + texto + CTA "Criar Primeiro Livro"
+- [x] Ilustração + texto + CTA "Criar Primeiro Livro"
 
 ### 5.7 CreateBookModal
 
 **Arquivo:** `app/components/dashboard/create-book-modal.vue`
 
-- [ ] Modal mobile/desktop, formulário completo, preview capa, validação, loading, toast
+- [x] Modal mobile/desktop, formulário completo, preview capa, validação, loading, toast
 
 ### 5.8 CategorySelect
 
 **Arquivo:** `app/components/dashboard/category-select.vue`
 
-- [ ] Dropdown categorias português, animado
+- [x] Dropdown categorias português, animado
 
 ### 5.9 CoverColorPicker
 
 **Arquivo:** `app/components/dashboard/cover-color-picker.vue`
 
-- [ ] Grid 16 cores, preview em tempo real
+- [x] Grid 16 cores, preview em tempo real
 
 ### 5.10 UploadCover
 
 **Arquivo:** `app/components/dashboard/upload-cover.vue`
 
-- [ ] Upload clique, preview, validação tipo/tamanho, remover
+- [x] Upload clique, preview, validação tipo/tamanho, remover
 
 ### 5.11 QuickActions
 
 **Arquivo:** `app/components/dashboard/quick-actions.vue`
 
-- [ ] Grid 2x2: Novo Livro, Explorar, Minha Sessão, Estatísticas (placeholder)
+- [x] Grid 2x2: Novo Livro, Explorar, Minha Sessão, Estatísticas (placeholder)
 
 ### 5.12 SharedUiToast
 
 **Arquivo:** `app/components/shared/ui/toast.vue`
 
-- [ ] Toast notifications com TransitionGroup
+- [x] Toast notifications com TransitionGroup
 
 ### 5.13 SharedUiSkeletonText
 
 **Arquivo:** `app/components/shared/ui/skeleton-text.vue`
 
-- [ ] Skeleton loading reutilizável
+- [x] Skeleton loading reutilizável
 
 ---
 

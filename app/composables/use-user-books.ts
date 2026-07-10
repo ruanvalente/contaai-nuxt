@@ -45,6 +45,14 @@ export const useUserBooks = () => {
     }
   }
 
+  const updateBook = (id: string, data: Partial<Omit<UserBook, 'id' | 'user_id'>>) => {
+    const index = books.value.findIndex(b => b.id === id)
+    if (index !== -1) {
+      const existing = books.value[index]
+      books.value[index] = { ...existing, ...data } as UserBook
+    }
+  }
+
   const deleteBook = async (id: string): Promise<boolean> => {
     isLoadingDelete.value = true
     error.value = null
@@ -69,6 +77,7 @@ export const useUserBooks = () => {
     isEmpty,
     fetchBooks,
     createBook,
+    updateBook,
     deleteBook,
   }
 }
