@@ -102,10 +102,10 @@
 
 **Arquivo:** `app/layouts/dashboard.vue`
 
-- [ ] Header fixo + Sidebar + slot
-- [ ] Sidebar lg:w-64, mobile drawer overlay
-- [ ] Transições suaves
-- [ ] SharedUiToast incluso
+- [x] Header fixo + Sidebar + slot
+- [x] Sidebar lg:w-64, mobile drawer overlay
+- [x] Transições suaves
+- [x] SharedUiToast incluso
 
 ---
 
