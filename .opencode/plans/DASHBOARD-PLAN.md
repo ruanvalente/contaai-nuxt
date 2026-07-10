@@ -78,21 +78,21 @@
 
 **Arquivo:** `app/composables/use-user-books.ts`
 
-- [ ] Singleton com `books`, `isLoading`, `isCreating`, `error`, `isEmpty`
-- [ ] Métodos: `fetchBooks()`, `createBook(payload)`, `deleteBook(id)`
+- [x] Singleton com `books`, `isLoading`, `isCreating`, `error`, `isEmpty`
+- [x] Métodos: `fetchBooks()`, `createBook(payload)`, `deleteBook(id)`
 
 ### 3.2 useDashboard
 
 **Arquivo:** `app/composables/use-dashboard.ts`
 
-- [ ] Singleton com `userMetrics`, `platformMetrics`, `isLoading`, `error`
-- [ ] Método: `fetchMetrics()`
+- [x] Singleton com `userMetrics`, `platformMetrics`, `isLoading`, `error`
+- [x] Método: `fetchMetrics()`
 
 ### 3.3 useToast
 
 **Arquivo:** `app/composables/use-toast.ts`
 
-- [ ] Singleton com `toasts`, `success()`, `error()`, `info()`
+- [x] Singleton com `toasts`, `success()`, `error()`, `info()`
 
 ---
 
