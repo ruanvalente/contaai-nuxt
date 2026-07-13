@@ -1,19 +1,19 @@
 export type BookCategory = 
-  | "Sci-Fi" 
-  | "Fantasy" 
+  | "Ficção Científica" 
+  | "Fantasia" 
   | "Drama" 
-  | "Business" 
-  | "Education" 
-  | "Geography";
+  | "Negócios" 
+  | "Educação" 
+  | "Geografia";
 
 export type Category = "All" | BookCategory;
 
 export const CATEGORIES: Category[] = [
-  "All", "Sci-Fi", "Fantasy", "Drama", "Business", "Education", "Geography"
+  "All", "Ficção Científica", "Fantasia", "Drama", "Negócios", "Educação", "Geografia"
 ];
 
 export const BOOK_CATEGORIES: BookCategory[] = [
-  "Sci-Fi", "Fantasy", "Drama", "Business", "Education", "Geography"
+  "Ficção Científica", "Fantasia", "Drama", "Negócios", "Educação", "Geografia"
 ];
 
 export interface Book {
