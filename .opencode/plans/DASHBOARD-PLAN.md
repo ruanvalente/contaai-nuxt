@@ -2,7 +2,7 @@
 
 > Documento de planejamento e tracking para implementação do Dashboard do Autor na plataforma ContaAI.
 >
-> **Status:** Em andamento 07/07/2026
+> **Status:** Concluído 13/07/2026
 
 ---
 
@@ -198,17 +198,17 @@
 
 **Arquivo:** `app/pages/dashboard.vue`
 
-- [ ] Layout dashboard, middleware auth
-- [ ] loading inicial, métricas, ações rápidas, grid/empty books
-- [ ] Modal criação, delete com confirmação toast
+- [x] Layout dashboard, middleware auth
+- [x] loading inicial, métricas, ações rápidas, grid/empty books
+- [x] Modal criação, delete com confirmação toast
 
 ---
 
 ## Fase 7 — Verificação
 
-- [ ] TypeScript compila sem erros
-- [ ] Componentes seguem padrões existentes
-- [ ] Responsivo (mobile/tablet/desktop)
+- [x] TypeScript compila sem erros (dashboard.vue)
+- [x] Componentes seguem padrões existentes
+- [x] Responsivo (mobile/tablet/desktop)
 
 ---
 
@@ -241,7 +241,7 @@
 | `app/components/shared/ui/toast.vue`              | Component  |
 | `app/components/shared/ui/skeleton-text.vue`      | Component  |
 
-## Arquivos Modificados (4)
+## Arquivos Modificados (5)
 
 | Arquivo                                 | Mudança                  |
 | --------------------------------------- | ------------------------ |
@@ -249,3 +249,4 @@
 | `server/domain/entities/book.entity.ts` | Categorias PT            |
 | `app/pages/dashboard.vue`               | Reescríta completa       |
 | `app/layouts/dashboard.vue`             | Adicionado SharedUiToast |
+| `.opencode/plans/DASHBOARD-PLAN.md`     | Atualizado status        |
