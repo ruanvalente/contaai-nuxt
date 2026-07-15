@@ -6,19 +6,21 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/google-fonts",
     "@nuxtjs/supabase",
+    "@pinia/nuxt",
   ],
   supabase: {
     redirect: true,
     redirectOptions: {
       login: "/auth/login",
       callback: "/confirm",
-      exclude: ["/", "/auth/*", "/explore"],
+      exclude: ["/", "/auth/*", "/dashboard/explore"],
     },
   },
   googleFonts: {
     families: {
       Inter: [400, 500, 600, 700],
       "Playfair Display": [600, 700],
+      "Cormorant Garamond": [400, 600, 700],
     },
 
     display: "swap",
