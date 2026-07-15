@@ -24,12 +24,12 @@ const navItems = [
   },
   {
     label: "Explorar",
-    to: "/explore",
+    to: "/dashboard/explore",
     icon: "search",
   },
   {
     label: "Minha Sessão",
-    to: "/my-session",
+    to: "/dashboard/my-session",
     icon: "book",
   },
 ];
@@ -55,7 +55,7 @@ function isActive(to: string): boolean {
 
   <aside
     :class="[
-      'fixed top-16 left-0 bottom-0 z-40 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out',
+      'fixed top-16 left-0 bottom-0 z-40 w-64 bg-sidebar transform transition-transform duration-300 ease-in-out',
       open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
     ]"
   >
@@ -68,8 +68,8 @@ function isActive(to: string): boolean {
           :class="[
             'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
             isActive(item.to)
-              ? 'bg-accent-100 text-accent-700'
-              : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
+              ? 'bg-accent text-white'
+              : 'text-white/70 hover:bg-white/10 hover:text-white',
           ]"
           @click="emit('close')"
         >
@@ -122,10 +122,10 @@ function isActive(to: string): boolean {
         </NuxtLink>
       </div>
 
-      <div class="border-t border-gray-200 pt-4">
+      <div class="border-t border-white/20 pt-4">
         <button
           :disabled="loggingOut"
-          class="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors disabled:opacity-50"
+          class="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
           @click="emit('logout')"
         >
           <svg
