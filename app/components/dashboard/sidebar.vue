@@ -47,7 +47,7 @@ function isActive(to: string): boolean {
     <Transition name="fade">
       <div
         v-if="open"
-        class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+        class="fixed inset-0 z-30 bg-black/50 lg:hidden"
         @click="emit('close')"
       />
     </Transition>

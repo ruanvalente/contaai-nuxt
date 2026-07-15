@@ -10,6 +10,10 @@ interface Props {
 
 const { active, icon } = defineProps<Props>();
 
+const emit = defineEmits<{
+  navigate: [];
+}>();
+
 const iconMap: Record<string, any> = {
   Compass,
   Grid3X3,
@@ -19,6 +23,10 @@ const iconMap: Record<string, any> = {
 };
 
 const iconComponent = computed(() => iconMap[icon] || Compass);
+
+function onClick() {
+  emit('navigate');
+}
 </script>
 
 <template>
@@ -28,6 +36,7 @@ const iconComponent = computed(() => iconMap[icon] || Compass);
       'flex items-center gap-4 px-6 py-4 rounded-2xl transition duration-200',
       active ? 'bg-accent text-white' : 'text-accent hover:bg-sidebar-hover',
     ]"
+    @click="onClick"
   >
     <component :is="iconComponent" class="w-5 h-5" />
     <span class="font-medium text-sm">{{ label }}</span>

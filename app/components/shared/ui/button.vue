@@ -2,7 +2,7 @@
 interface Props {
   type?: 'button' | 'submit'
   disabled?: boolean
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'ghost'
 }
 
 withDefaults(defineProps<Props>(), {
@@ -18,9 +18,10 @@ withDefaults(defineProps<Props>(), {
     :disabled="disabled"
     :class="[
       'inline-flex items-center justify-center rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50',
-      variant === 'primary'
-        ? 'bg-[#C9A87C] text-white hover:bg-[#B8956A]'
-        : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50',
+      variant === 'primary' && 'bg-[#C9A87C] text-white hover:bg-[#B8956A]',
+      variant === 'secondary' && 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50',
+      variant === 'ghost' && 'bg-transparent text-[#6B7280] hover:bg-gray-100',
+      !variant && 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50',
     ]"
   >
     <slot />

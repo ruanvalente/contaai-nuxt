@@ -10,6 +10,7 @@
 |-------|--------|-------------|
 | Phase 0 — Foundation & Configuration | ✅ Executada | 2026-07-15 |
 | Phase 1 — Layout Shell | ✅ Executada | 2026-07-15 |
+| Phase 2 — Common Components | ✅ Executada | 2026-07-15 |
 
 ---
 
@@ -251,7 +252,25 @@ Wraps the `<slot />` and applies the main content area styling.
 
 ---
 
-## Phase 2 — Common Components
+## Phase 2 — Common Components ✅ EXECUTADA
+
+**Goal:** Build reusable presentational components shared across sections.
+
+> **Status:** Executada com sucesso em 2026-07-15. Componentes criados/estendidos:
+> - `app/components/shared/common/search-input.vue` — Novo componente com v-model, ícone de busca e debounce 300ms
+> - `app/components/shared/common/section-title.vue` — Novo componente para títulos de seção com fonte serif
+> - `app/components/shared/common/hamburger-button.vue` — Novo componente para menu mobile com aria-label
+> - `app/components/shared/ui/button.vue` — Estendido com variante `ghost` (mantido padrão inline classes existente)
+> - `app/components/shared/ui/rating-stars.vue` — Estendido com prop `reviews` e `showReviews`
+>
+> **Reorganização:** Componentes movidos de `app/components/common/` para `app/components/shared/common/` com nomes em kebab-case.
+>
+> **Reutilização:** Componentes `button.vue` e `rating-stars.vue` existentes foram estendidos em vez de criar novos, seguindo o princípio DRY.
+>
+> **Correções pós-review:**
+> - Removido prop `size` do `button.vue` para evitar conflito com classes inline dos consumidores existentes
+> - Cor primária mantida como `#C9A87C` para compatibilidade com páginas existentes
+> - Corrigido z-index do overlay em `dashboard/sidebar.vue` de `z-40` para `z-30`
 
 **Goal:** Build reusable presentational components shared across sections.
 
@@ -329,11 +348,11 @@ interface Props {
 Visible only on mobile/tablet (`xl:hidden`). Toggles sidebar drawer. Props: `modelValue: boolean`.
 
 **Acceptance Criteria:**
-- [ ] SearchInput has v-model, rounded-full, correct dimensions
-- [ ] SectionTitle renders serif font at 40px
-- [ ] BaseButton supports 3 variants
-- [ ] All components use `<script setup lang="ts">`
-- [ ] No CSS files — Tailwind classes only
+- [x] SearchInput has v-model, rounded-full, correct dimensions
+- [x] SectionTitle renders serif font at 40px
+- [x] BaseButton supports 3 variants (primary, secondary, ghost)
+- [x] All components use `<script setup lang="ts">`
+- [x] No CSS files — Tailwind classes only
 
 ---
 
@@ -786,11 +805,14 @@ app/
 │   ├── category/
 │   │   ├── CategoryChip.vue        ← Phase 4.1
 │   │   └── CategoryList.vue        ← Phase 4.2
-│   └── common/
-│       ├── SearchInput.vue         ← Phase 2.1
-│       ├── SectionTitle.vue        ← Phase 2.2
-│       ├── BaseButton.vue          ← Phase 2.3
-│       └── HamburgerButton.vue     ← Phase 2.4
+│   └── shared/
+│       ├── common/
+│       │   ├── search-input.vue    ← Phase 2.1 ✅
+│       │   ├── section-title.vue   ← Phase 2.2 ✅
+│       │   └── hamburger-button.vue ← Phase 2.4 ✅
+│       └── ui/
+│           ├── button.vue          ← Estendido (Phase 2.3)
+│           └── rating-stars.vue    ← Estendido (Phase 2.3)
 ├── composables/
 │   ├── use-discovery-books.ts      ← Phase 0.5
 │   └── use-discovery-categories.ts ← Phase 0.5
@@ -811,6 +833,9 @@ app/
 | `tailwind.config.ts` | 0.3 | Add full color palette |
 | `nuxt.config.ts` | 0.2 | Add Pinia module, optional font |
 | `package.json` | 0.1 | New dependencies |
+| `app/components/shared/ui/button.vue` | 2.3 | Estendido com variante ghost |
+| `app/components/shared/ui/rating-stars.vue` | 2.3 | Estendido com prop reviews |
+| `app/components/dashboard/sidebar.vue` | Fix | z-index overlay corrigido para z-30 |
 
 ## Dependency Graph
 
