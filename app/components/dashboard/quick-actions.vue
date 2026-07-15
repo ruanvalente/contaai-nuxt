@@ -22,13 +22,13 @@ const actions = [
     label: 'Explorar',
     icon: 'search',
     color: 'bg-blue-500',
-    to: '/explore',
+    to: '/dashboard/explore',
   },
   {
     label: 'Minha Sessão',
     icon: 'book',
     color: 'bg-green-500',
-    to: '/my-session',
+    to: '/dashboard/my-session',
   },
   {
     label: 'Estatísticas',

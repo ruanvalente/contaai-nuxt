@@ -4,7 +4,16 @@
 
 ---
 
-## Phase 0 — Foundation & Configuration
+## Execution Log
+
+| Phase | Status | Executed At |
+|-------|--------|-------------|
+| Phase 0 — Foundation & Configuration | ✅ Executada | 2026-07-15 |
+| Phase 1 — Layout Shell | ✅ Executada | 2026-07-15 |
+
+---
+
+## Phase 0 — Foundation & Configuration ✅ EXECUTADA
 
 **Goal:** Update Tailwind theme, install missing dependencies, and define shared types/constants.
 
@@ -105,9 +114,16 @@ export const DISCOVERY_CATEGORIES: DiscoveryCategory[] = [
 
 ---
 
-## Phase 1 — Layout Shell
+## Phase 1 — Layout Shell ✅ EXECUTADA
 
 **Goal:** Build the sidebar + header + main content container that fills 100vh.
+
+> **Status:** Executada com sucesso em 2026-07-15. Todos os componentes criados:
+> - `app/components/layout/SidebarItem.vue`
+> - `app/components/layout/AppSidebar.vue`
+> - `app/components/layout/AppHeader.vue`
+> - `app/components/layout/AppContainer.vue`
+> - `app/layouts/discovery.vue`
 
 ### 1.1 `AppSidebar.vue`
 

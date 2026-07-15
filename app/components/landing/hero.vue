@@ -43,7 +43,7 @@ onMounted(() => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
           ]"
         >
-          <SharedUiButton variant="primary" class="px-8 py-4 text-lg" @click="router.push('/explore')">
+          <SharedUiButton variant="primary" class="px-8 py-4 text-lg" @click="router.push('/dashboard/explore')">
             Explorar
           </SharedUiButton>
           <SharedUiButton variant="secondary" class="px-8 py-4 text-lg gap-2">

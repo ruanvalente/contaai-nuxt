@@ -14,10 +14,10 @@ const emit = defineEmits<{
 
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-40 h-16 bg-white border-b border-gray-200 flex items-center px-4 sm:px-6"
+    class="fixed top-0 left-0 right-0 z-40 h-16 bg-sidebar flex items-center px-4 sm:px-6"
   >
     <button
-      class="lg:hidden p-2 -ml-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+      class="lg:hidden p-2 -ml-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
       @click="emit('toggleSidebar')"
     >
       <svg
@@ -33,17 +33,17 @@ const emit = defineEmits<{
     </button>
 
     <NuxtLink to="/dashboard" class="hidden lg:flex items-center gap-2 ml-2">
-      <div class="h-8 w-8 rounded-lg bg-accent-500 flex items-center justify-center">
+      <div class="h-8 w-8 rounded-lg bg-accent flex items-center justify-center">
         <span class="text-white font-display font-bold text-sm">C</span>
       </div>
-      <span class="font-display font-semibold text-lg text-gray-900">ContaAI</span>
+      <span class="font-display font-semibold text-lg text-white">ContaAI</span>
     </NuxtLink>
 
     <div class="flex-1" />
 
     <div class="flex items-center gap-3">
       <button
-        class="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+        class="relative p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,13 +60,13 @@ const emit = defineEmits<{
           />
         </svg>
         <span
-          class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-accent-500"
+          class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-accent"
         />
       </button>
 
       <div class="flex items-center gap-2">
         <div
-          class="h-8 w-8 rounded-full bg-accent-100 flex items-center justify-center overflow-hidden"
+          class="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center overflow-hidden"
         >
           <img
             v-if="user?.profile?.avatar_url"
@@ -74,11 +74,11 @@ const emit = defineEmits<{
             :alt="user.name || 'Avatar'"
             class="h-full w-full object-cover"
           />
-          <span v-else class="text-accent-600 font-medium text-sm">
+          <span v-else class="text-white font-medium text-sm">
             {{ (user?.name || user?.email || 'U').charAt(0).toUpperCase() }}
           </span>
         </div>
-        <span class="hidden sm:block text-sm font-medium text-gray-700">
+        <span class="hidden sm:block text-sm font-medium text-white">
           {{ user?.name || user?.email }}
         </span>
       </div>

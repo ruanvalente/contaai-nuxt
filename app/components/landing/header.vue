@@ -6,8 +6,8 @@ const router = useRouter()
 
 const navItems = [
   { label: "Home", href: "#hero", external: false },
-  { label: "Explorar", href: "/explore", external: true },
-  { label: "Minha Sessão", href: "/my-session", external: true },
+  { label: "Explorar", href: "/dashboard/explore", external: true },
+  { label: "Minha Sessão", href: "/dashboard/my-session", external: true },
   { label: "Comunidade", href: "#community", external: false },
   { label: "Contribuir", href: "#contribute", external: false },
 ];
