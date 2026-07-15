@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/google-fonts",
     "@nuxtjs/supabase",
+    "@pinia/nuxt",
   ],
   supabase: {
     redirect: true,
@@ -19,6 +20,7 @@ export default defineNuxtConfig({
     families: {
       Inter: [400, 500, 600, 700],
       "Playfair Display": [600, 700],
+      "Cormorant Garamond": [400, 600, 700],
     },
 
     display: "swap",
