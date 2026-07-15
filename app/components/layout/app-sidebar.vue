@@ -55,7 +55,7 @@ const currentRoute = computed(() => route.path);
         :label="item.label"
         :href="item.href"
         :active="currentRoute === item.href"
-        @click="emit('close')"
+        @navigate="emit('close')"
       />
     </nav>
   </aside>
