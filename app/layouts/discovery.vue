@@ -11,7 +11,7 @@ const closeSidebar = () => {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen overflow-x-hidden">
     <LayoutAppSidebar :open="sidebarOpen" @close="closeSidebar" />
     <LayoutAppHeader :sidebar-open="sidebarOpen" @toggle-sidebar="toggleSidebar" />
     <LayoutAppContainer>
