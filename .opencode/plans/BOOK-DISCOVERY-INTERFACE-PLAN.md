@@ -13,6 +13,7 @@
 | Phase 2 — Common Components | ✅ Executada | 2026-07-15 |
 | Phase 3 — Book Components | ✅ Executada | 2026-07-15 |
 | Phase 4 — Category Components | ✅ Executada | 2026-07-16 |
+| Phase 5 — Page Assembly | ✅ Executada | 2026-07-16 |
 
 ---
 
@@ -571,9 +572,29 @@ On mobile: horizontal scroll with `overflow-x-auto` and `flex-nowrap`.
 
 ---
 
-## Phase 5 — Page Assembly
+## Phase 5 — Page Assembly ✅ EXECUTADA
 
 **Goal:** Compose all components into the discovery page.
+
+> **Status:** Executada com sucesso em 2026-07-16. Arquivos criados/modificados:
+> - `app/pages/discover.vue` — Página principal com layout discovery, grid responsivo, loading skeleton, estados vazios/erro, e infinite scroll via IntersectionObserver
+> - `app/composables/use-discovery-books.ts` — Atualizado para mapear `review_count` da API para campo `reviews` (compatibilidade com `BookDiscoveryCard`)
+> - `app/types/discovery.ts` — Adicionado interface `DiscoveryBook` com campo `reviews`
+>
+> **Detalhes:**
+> - Página usa `definePageMeta({ layout: 'discovery' })` para aplicar o layout com sidebar/header
+> - Grid responsivo: `grid-cols-1 md:grid-cols-2 xl:grid-cols-4`
+> - Infinite scroll via `IntersectionObserver` com `rootMargin: 400px`
+> - Loading skeleton com 8 placeholders animados (`animate-pulse`)
+> - Estados de erro com botão "Tentar novamente" e vazio com mensagem informativa
+> - Botão "Carregar mais" visível quando `hasMore` e não está carregando
+> - Componentes usam nomes PascalCase do Nuxt auto-import: `BookDiscoveryCard`, `CategoryCategoryList`, `SharedCommonSectionTitle`, `SharedUiButton`
+>
+> **Correções pós-review:**
+> - Alinhamento de categorias: `DISCOVERY_CATEGORIES`, `BookCategory`, e `BOOK_CATEGORIES` atualizados para usar valores em inglês que correspondem ao banco de dados (`"Sci-Fi"`, `"Fantasy"`, etc.) em vez de português (`"Ficção Científica"`, `"Fantasia"`, etc.)
+> - Corrigido bug no server mapper que silenciosamente defaultava todos os livros não-"Drama" para `"Drama"` devido à incompatibilidade de categorias
+> - `useDiscoveryBooks` atualizado para mapear `review_count` da API para campo `reviews` (compatibilidade com `BookDiscoveryCard`)
+> - Adicionado interface `DiscoveryBook` em `app/types/discovery.ts`
 
 ### 5.1 Create `app/pages/discover.vue`
 
@@ -678,12 +699,12 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 ```
 
 **Acceptance Criteria:**
-- [ ] `/discover` renders the full layout with sidebar, header, and content
-- [ ] Section title "Recomendados para Você" displays in serif font
-- [ ] Category chips filter books reactively
-- [ ] Book grid shows 4 columns on desktop, 2 on tablet, 1 on mobile
-- [ ] Loading skeleton renders while data loads
-- [ ] Empty and error states display correctly
+- [x] `/discover` renders the full layout with sidebar, header, and content
+- [x] Section title "Recomendados para Você" displays in serif font
+- [x] Category chips filter books reactively
+- [x] Book grid shows 4 columns on desktop, 2 on tablet, 1 on mobile
+- [x] Loading skeleton renders while data loads
+- [x] Empty and error states display correctly
 
 ---
 
@@ -835,16 +856,16 @@ app/
 │           ├── button.vue          ← Estendido (Phase 2.3)
 │           └── rating-stars.vue    ← Estendido (Phase 2.3)
 ├── composables/
-│   ├── use-discovery-books.ts      ← Phase 0.5
-│   └── use-discovery-categories.ts ← Phase 0.5
+│   ├── use-discovery-books.ts      ← Phase 0.5 ✅ (atualizado Phase 5)
+│   └── use-discovery-categories.ts ← Phase 0.5 ✅
 ├── layouts/
 │   └── discovery.vue               ← Phase 1.5
 ├── pages/
-│   └── discover.vue                ← Phase 5.1
+│   └── discover.vue                ← Phase 5.1 ✅
 ├── stores/
 │   └── discovery.ts                ← Phase 7.3
 └── types/
-    └── discovery.ts                ← Phase 0.4
+    └── discovery.ts                ← Phase 0.4 ✅ (atualizado Phase 5)
 ```
 
 ## Files Modified
@@ -858,6 +879,11 @@ app/
 | `app/components/shared/ui/rating-stars.vue` | 2.3 | Estendido com prop reviews |
 | `app/components/book/discovery-rating.vue` | 3.2 | Wrapper delegando para SharedUiRatingStars |
 | `app/components/dashboard/sidebar.vue` | Fix | z-index overlay corrigido para z-30 |
+| `app/types/book.entity.ts` | Fix | BookCategory atualizado para valores em inglês (matching DB) |
+| `server/domain/entities/book.entity.ts` | Fix | BookCategory atualizado para valores em inglês (matching DB) |
+| `app/types/discovery.ts` | 5 | Adicionado DiscoveryBook; IDs das categorias alinhados com DB |
+| `app/composables/use-discovery-books.ts` | 5 | Mapeamento ApiBook→DiscoveryBook com campo reviews |
+| `app/composables/use-discovery-categories.ts` | 5 | Default category atualizado para "All" |
 
 ## Dependency Graph
 
