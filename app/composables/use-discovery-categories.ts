@@ -1,7 +1,7 @@
 import { DISCOVERY_CATEGORIES } from "~/types/discovery";
 
 export const useDiscoveryCategories = () => {
-  const activeCategory = ref("all");
+  const activeCategory = ref("All");
 
   const categories = computed(() =>
     DISCOVERY_CATEGORIES.map((cat) => ({
