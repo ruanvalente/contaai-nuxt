@@ -12,6 +12,7 @@
 | Phase 1 — Layout Shell | ✅ Executada | 2026-07-15 |
 | Phase 2 — Common Components | ✅ Executada | 2026-07-15 |
 | Phase 3 — Book Components | ✅ Executada | 2026-07-15 |
+| Phase 4 — Category Components | ✅ Executada | 2026-07-16 |
 
 ---
 
@@ -496,9 +497,18 @@ interface Props {
 
 ---
 
-## Phase 4 — Category Components
+## Phase 4 — Category Components ✅ EXECUTADA
 
 **Goal:** Build category chip and horizontal category list.
+
+> **Status:** Executada com sucesso em 2026-07-16. Componentes criados:
+> - `app/components/category/category-chip.vue` — Chip com estados active/inactive
+> - `app/components/category/category-list.vue` — Lista horizontal com emit `select`
+>
+> **Detalhes:**
+> - `CategoryChip` usa `<button>` com classes Tailwind (bg-sidebar text-white para active, bg-white border stone-200 para inactive)
+> - `CategoryList` recebe `DiscoveryCategory[]` e `activeId`, emite `select(categoryId)`
+> - Segue padrão kebab-case e `<script setup lang="ts">` dos componentes existentes
 
 ### 4.1 `CategoryChip.vue`
 
@@ -554,10 +564,10 @@ interface Props {
 On mobile: horizontal scroll with `overflow-x-auto` and `flex-nowrap`.
 
 **Acceptance Criteria:**
-- [ ] Chip renders with correct active/inactive states
-- [ ] List renders horizontally, wraps on desktop, scrolls on mobile
-- [ ] Active chip has `bg-sidebar text-white`
-- [ ] Inactive chip has white bg, stone border, hover state
+- [x] Chip renders with correct active/inactive states
+- [x] List renders horizontally, wraps on desktop, scrolls on mobile
+- [x] Active chip has `bg-sidebar text-white`
+- [x] Inactive chip has white bg, stone border, hover state
 
 ---
 
@@ -814,8 +824,8 @@ app/
 │   │   ├── discovery-cover.vue       ← Phase 3.1 ✅ (renamed from book-cover)
 │   │   └── discovery-rating.vue      ← Phase 3.2 ✅ (wrapper → SharedUiRatingStars)
 │   ├── category/
-│   │   ├── CategoryChip.vue        ← Phase 4.1
-│   │   └── CategoryList.vue        ← Phase 4.2
+│   │   ├── CategoryChip.vue        ← Phase 4.1 ✅
+│   │   └── CategoryList.vue        ← Phase 4.2 ✅
 │   └── shared/
 │       ├── common/
 │       │   ├── search-input.vue    ← Phase 2.1 ✅
