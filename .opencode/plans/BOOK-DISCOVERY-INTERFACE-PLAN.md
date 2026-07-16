@@ -15,6 +15,7 @@
 | Phase 4 — Category Components | ✅ Executada | 2026-07-16 |
 | Phase 5 — Page Assembly | ✅ Executada | 2026-07-16 |
 | Phase 6 — Responsive Design | ✅ Executada | 2026-07-16 |
+| Phase 7 — Polish & Integration | ✅ Executada | 2026-07-16 |
 
 ---
 
@@ -758,9 +759,29 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 
 ---
 
-## Phase 7 — Polish & Integration
+## Phase 7 — Polish & Integration ✅ EXECUTADA
 
 **Goal:** Final touches, accessibility, performance, and API readiness.
+
+> **Status:** Executada com sucesso em 2026-07-16. Alterações realizadas:
+> - **7.1 Accessibility:**
+>   - `sidebar-item.vue` — Adicionado `focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-sidebar`
+>   - `discovery-card.vue` — Adicionado `aria-label` descritivo + `prefetch` + focus ring
+>   - `category-chip.vue` — Adicionado `focus:ring-2 focus:ring-accent focus:ring-offset-2`
+>   - `button.vue` — Adicionado `focus:ring-2 focus:ring-accent focus:ring-offset-2`
+>   - `discovery-cover.vue` — Elementos decorativos marcados com `aria-hidden="true"`
+>   - `discovery.vue` (layout) — Adicionado skip-to-content link (`sr-only focus:not-sr-only`)
+>   - `app-container.vue` — Adicionado `id="main-content"` como target do skip link
+> - **7.2 Performance:**
+>   - `discovery-card.vue` — Adicionado `prefetch` no NuxtLink para pré-busca de páginas de detalhe
+>   - IntersectionObserver cleanup já estava implementado (Phase 5)
+>   - Search debounce já estava implementado (Phase 2)
+> - **7.3 Pinia Store:**
+>   - Store `app/stores/discovery.ts` criado mas removido — o composable `useDiscoveryBooks` já gerencia state, URL sync, caching e loadMore internamente. Store seria código morto.
+> - **7.4 API Integration:**
+>   - Já implementada no composable `useDiscoveryBooks` com mapper `mapApiToDiscoveryBook`
+> - **7.5 Typecheck:**
+>   - Todos os arquivos `app/` passam no typecheck (erros pré-existentes em `server/infrastructure/` e `dashboard/my-session.vue`)
 
 ### 7.1 Accessibility
 
@@ -844,7 +865,7 @@ app/
 ├── pages/
 │   └── discover.vue                ← Phase 5.1 ✅
 ├── stores/
-│   └── discovery.ts                ← Phase 7.3
+│   └── (removido — composable já gerencia state)
 └── types/
     └── discovery.ts                ← Phase 0.4 ✅ (atualizado Phase 5)
 ```
