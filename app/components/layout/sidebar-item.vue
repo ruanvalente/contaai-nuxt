@@ -33,7 +33,7 @@ function onClick() {
   <NuxtLink
     :to="href"
     :class="[
-      'flex items-center gap-4 px-6 py-4 rounded-2xl transition duration-200',
+      'flex items-center gap-4 px-6 py-4 rounded-2xl transition duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-sidebar',
       active ? 'bg-accent text-white' : 'text-accent hover:bg-sidebar-hover',
     ]"
     @click="onClick"

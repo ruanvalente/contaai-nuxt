@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
       {{ title }}
     </span>
 
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-12 h-px bg-[#EFE6E2]/40" />
-    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-4 h-px bg-[#EFE6E2]/60" />
+    <div aria-hidden="true" class="absolute bottom-6 left-1/2 -translate-x-1/2 w-12 h-px bg-[#EFE6E2]/40" />
+    <div aria-hidden="true" class="absolute bottom-4 left-1/2 -translate-x-1/2 w-4 h-px bg-[#EFE6E2]/60" />
   </div>
 </template>
