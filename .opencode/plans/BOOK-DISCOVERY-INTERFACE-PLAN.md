@@ -11,6 +11,7 @@
 | Phase 0 — Foundation & Configuration | ✅ Executada | 2026-07-15 |
 | Phase 1 — Layout Shell | ✅ Executada | 2026-07-15 |
 | Phase 2 — Common Components | ✅ Executada | 2026-07-15 |
+| Phase 3 — Book Components | ✅ Executada | 2026-07-15 |
 
 ---
 
@@ -356,9 +357,19 @@ Visible only on mobile/tablet (`xl:hidden`). Toggles sidebar drawer. Props: `mod
 
 ---
 
-## Phase 3 — Book Components
+## Phase 3 — Book Components ✅ EXECUTADA
 
 **Goal:** Build the book card, cover, and rating components per spec.
+
+> **Status:** Executada com sucesso em 2026-07-15. Componentes criados:
+> - `app/components/book/discovery-cover.vue` — Capa 190×290px com cor dinâmica e elementos decorativos
+> - `app/components/book/discovery-rating.vue` — Wrapper delegando para `SharedUiRatingStars` (sem duplicação)
+> - `app/components/book/discovery-card.vue` — Card 360px com NuxtLink, usando DiscoveryCover e DiscoveryRating
+>
+> **Correções pós-review:**
+> - Renomeados de `book-*` para `discovery-*` para evitar colisão com `shared/ui/book-card.vue` e `shared/ui/book-cover.vue`
+> - `discovery-rating.vue` delega para `SharedUiRatingStars` existente em vez de reimplementar lógica de estrelas
+> - Cores hardcoded substituídas por theme tokens (`text-text-dark`, `text-muted`)
 
 ### 3.1 `BookCover.vue`
 
@@ -477,11 +488,11 @@ interface Props {
 ```
 
 **Acceptance Criteria:**
-- [ ] BookCover renders at 190×290px with decorative bottom elements
-- [ ] BookCard renders at 360px width, white bg, rounded-3xl, shadow-md
-- [ ] BookRating shows amber stars + review count
-- [ ] Cards are clickable (`NuxtLink` to `/books/:id`)
-- [ ] Hover effect: `shadow-lg transition-shadow`
+- [x] BookCover renders at 190×290px with decorative bottom elements
+- [x] BookCard renders at 360px width, white bg, rounded-3xl, shadow-md
+- [x] BookRating shows amber stars + review count
+- [x] Cards are clickable (`NuxtLink` to `/books/:id`)
+- [x] Hover effect: `shadow-lg transition-shadow`
 
 ---
 
@@ -799,9 +810,9 @@ app/
 │   │   ├── AppHeader.vue           ← Phase 1.3
 │   │   └── AppContainer.vue        ← Phase 1.4
 │   ├── book/
-│   │   ├── BookCard.vue            ← Phase 3.3
-│   │   ├── BookCover.vue           ← Phase 3.1
-│   │   └── BookRating.vue          ← Phase 3.2
+│   │   ├── discovery-card.vue        ← Phase 3.3 ✅ (renamed from book-card)
+│   │   ├── discovery-cover.vue       ← Phase 3.1 ✅ (renamed from book-cover)
+│   │   └── discovery-rating.vue      ← Phase 3.2 ✅ (wrapper → SharedUiRatingStars)
 │   ├── category/
 │   │   ├── CategoryChip.vue        ← Phase 4.1
 │   │   └── CategoryList.vue        ← Phase 4.2
@@ -835,6 +846,7 @@ app/
 | `package.json` | 0.1 | New dependencies |
 | `app/components/shared/ui/button.vue` | 2.3 | Estendido com variante ghost |
 | `app/components/shared/ui/rating-stars.vue` | 2.3 | Estendido com prop reviews |
+| `app/components/book/discovery-rating.vue` | 3.2 | Wrapper delegando para SharedUiRatingStars |
 | `app/components/dashboard/sidebar.vue` | Fix | z-index overlay corrigido para z-30 |
 
 ## Dependency Graph
