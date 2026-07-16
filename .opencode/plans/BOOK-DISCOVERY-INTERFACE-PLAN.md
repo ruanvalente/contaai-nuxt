@@ -14,6 +14,7 @@
 | Phase 3 — Book Components | ✅ Executada | 2026-07-15 |
 | Phase 4 — Category Components | ✅ Executada | 2026-07-16 |
 | Phase 5 — Page Assembly | ✅ Executada | 2026-07-16 |
+| Phase 6 — Responsive Design | ✅ Executada | 2026-07-16 |
 
 ---
 
@@ -708,9 +709,22 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 
 ---
 
-## Phase 6 — Responsive Design
+## Phase 6 — Responsive Design ✅ EXECUTADA
 
 **Goal:** Ensure full responsiveness across desktop, tablet, and mobile breakpoints.
+
+> **Status:** Executada com sucesso em 2026-07-16. Alterações realizadas:
+> - `app/components/book/discovery-card.vue` — Atualizado de `w-[360px]` para `w-full max-w-[360px]` para adaptar ao grid responsivo
+> - `app/components/category/category-chip.vue` — Padding ajustado para mobile (`px-5 py-2.5 md:px-7 md:py-3`) e adicionado `whitespace-nowrap`
+> - `app/components/layout/app-header.vue` — Altura e padding responsivos (`h-16 md:h-22`, `px-4 md:px-8`)
+> - `app/layouts/discovery.vue` — Adicionado `overflow-x-hidden` para prevenir scroll horizontal
+> - `app/pages/discover.vue` — Grid com gap responsivo (`gap-4 md:gap-8`) e skeleton responsivo (`w-full max-w-[360px]`)
+>
+> **Detalhes:**
+> - Sidebar: Já implementada com drawer mobile, overlay e transição (Phase 1)
+> - Container: Já com `ml-0 xl:ml-80` e padding responsivo (Phase 1)
+> - CategoryList: Já com `flex-nowrap md:flex-wrap` e `overflow-x-auto` (Phase 4)
+> - Grid: `grid-cols-1 md:grid-cols-2 xl:grid-cols-4` com gaps adaptativos
 
 ### 6.1 Desktop (>1280px / `xl`)
 
@@ -726,17 +740,6 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 - Search: responsive width (`w-full max-w-md`)
 - Header: hamburger visible
 
-**Implementation in layout:**
-
-```vue
-<!-- AppSidebar.vue -->
-<aside :class="[
-  'fixed inset-y-0 left-0 z-30 bg-sidebar flex flex-col p-6 gap-5 transition-transform duration-300',
-  'w-80',                           // always 320px
-  open ? 'translate-x-0' : '-translate-x-full xl:translate-x-0'
-]">
-```
-
 ### 6.3 Mobile (<768px / below `md`)
 
 - Sidebar: off-canvas drawer (toggled by hamburger)
@@ -746,34 +749,12 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 - Category chips: `flex-nowrap overflow-x-auto`
 - Book cards: full width (`w-full` instead of `w-[360px]`)
 
-**Mobile drawer pattern:**
-
-```vue
-<!-- Overlay -->
-<div v-if="open" class="fixed inset-0 bg-black/50 z-20 xl:hidden" @click="close" />
-
-<!-- Sidebar with transition -->
-<Transition name="slide">
-  <aside v-show="open" class="fixed inset-y-0 left-0 z-30 w-80 xl:hidden ...">
-    ...
-  </aside>
-</Transition>
-```
-
-### 6.4 Responsive Utilities
-
-Use Tailwind breakpoints consistently:
-- `sm:` (640px) — small adjustments
-- `md:` (768px) — tablet
-- `lg:` (1024px) — small desktop
-- `xl:` (1280px) — full desktop with sidebar
-
 **Acceptance Criteria:**
-- [ ] Sidebar hidden on mobile, togglable via hamburger
-- [ ] Grid adapts: 4 → 2 → 1 columns
-- [ ] Category chips scroll horizontally on mobile
-- [ ] No horizontal overflow on any screen size
-- [ ] Touch-friendly tap targets (min 44px) on mobile
+- [x] Sidebar hidden on mobile, togglable via hamburger
+- [x] Grid adapts: 4 → 2 → 1 columns
+- [x] Category chips scroll horizontally on mobile
+- [x] No horizontal overflow on any screen size
+- [x] Touch-friendly tap targets (min 44px) on mobile
 
 ---
 

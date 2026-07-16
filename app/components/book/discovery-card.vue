@@ -14,7 +14,7 @@ defineProps<Props>()
 <template>
   <NuxtLink
     :to="`/books/${id}`"
-    class="w-[360px] bg-white rounded-3xl shadow-md p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200"
+    class="w-full max-w-[360px] bg-white rounded-3xl shadow-md p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200"
   >
     <BookDiscoveryCover :title="title" :cover-color="coverColor" />
 

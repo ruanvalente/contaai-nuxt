@@ -14,7 +14,7 @@ withDefaults(defineProps<Props>(), {
     type="button"
     :aria-pressed="active"
     :class="[
-      'rounded-full px-7 py-3 text-sm font-medium transition-colors',
+      'rounded-full px-5 py-2.5 md:px-7 md:py-3 text-sm font-medium transition-colors whitespace-nowrap',
       active
         ? 'bg-sidebar text-white'
         : 'bg-white border border-stone-200 text-text-dark hover:bg-stone-100',

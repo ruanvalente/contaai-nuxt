@@ -61,10 +61,10 @@ onUnmounted(() => {
 
       <div
         v-if="isLoading"
-        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mt-8"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8 mt-8"
       >
         <div v-for="i in 8" :key="i" class="animate-pulse">
-          <div class="w-[360px] h-[430px] bg-gray-200 rounded-3xl" />
+          <div class="w-full max-w-[360px] h-[430px] bg-gray-200 rounded-3xl" />
         </div>
       </div>
 
@@ -84,7 +84,7 @@ onUnmounted(() => {
 
       <template v-else>
         <div
-          class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mt-8"
+          class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8 mt-8"
         >
           <BookDiscoveryCard
             v-for="book in books"
