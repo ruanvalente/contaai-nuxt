@@ -1,17 +1,15 @@
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, watch, onUnmounted } from "vue";
 import { useEditorStore } from "~/stores/editor-store";
-import type { EditorContent, EditorConfig, EditorStats } from "~/types/editor";
-import { DEFAULT_EDITOR_CONFIG, DEFAULT_STATS } from "~/types/editor";
+import { calculateStats } from "~/utils/editor/editor-utils";
+import type { EditorContent, EditorStats } from "~/types/editor";
+import { EMPTY_EDITOR_CONTENT } from "~/types/editor";
 
 // =============================================================================
 // useEditor - Core Editor Composable
 // =============================================================================
 
-export function useEditor(config: Partial<EditorConfig> = {}) {
+export function useEditor() {
   const store = useEditorStore();
-  const editorConfig = { ...DEFAULT_EDITOR_CONFIG, ...config };
-
-  const isInitialized = ref(false);
   const editorRef = ref<any>(null);
 
   // ---------------------------------------------------------------------------
@@ -29,23 +27,15 @@ export function useEditor(config: Partial<EditorConfig> = {}) {
   const isLoading = computed(() => store.isLoading);
   const error = computed(() => store.error);
   const isDirty = computed(() => store.isDirty);
+  const cursorPosition = computed(() => store.cursorPosition);
 
   // ---------------------------------------------------------------------------
-  // Actions
+  // Content Methods
   // ---------------------------------------------------------------------------
-
-  function initialize(editor: any) {
-    editorRef.value = editor;
-    isInitialized.value = true;
-  }
-
-  function destroy() {
-    editorRef.value = null;
-    isInitialized.value = false;
-  }
 
   function loadContent(newContent: EditorContent) {
     store.updateContent(newContent);
+    recalculateStats(newContent);
   }
 
   function getContent(): EditorContent {
@@ -53,38 +43,48 @@ export function useEditor(config: Partial<EditorConfig> = {}) {
   }
 
   function clearContent() {
-    const emptyContent: EditorContent = {
-      type: "doc",
-      content: [{ type: "paragraph", content: [] }],
-    };
-    store.updateContent(emptyContent);
+    store.updateContent(EMPTY_EDITOR_CONTENT);
+    recalculateStats(EMPTY_EDITOR_CONTENT);
   }
 
-  function resetState() {
-    store.$reset();
-    destroy();
+  function recalculateStats(newContent?: EditorContent) {
+    const contentToUse = newContent ?? store.content;
+    const stats = calculateStats(contentToUse);
+    store.setStats(stats);
+    return stats;
   }
+
+  // ---------------------------------------------------------------------------
+  // Stats Methods
+  // ---------------------------------------------------------------------------
 
   function updateStats(newStats: EditorStats) {
     store.setStats(newStats);
   }
 
   // ---------------------------------------------------------------------------
-  // Lifecycle
+  // Document Methods
   // ---------------------------------------------------------------------------
 
-  onMounted(() => {
-    isInitialized.value = true;
-  });
+  function resetState() {
+    store.$reset();
+  }
 
-  onUnmounted(() => {
-    destroy();
-  });
+  function setLoading(loading: boolean) {
+    store.setLoading(loading);
+  }
+
+  function setError(error: string | null) {
+    store.setError(error);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return {
     // Refs
     editorRef,
-    isInitialized,
 
     // Computed
     content,
@@ -94,14 +94,16 @@ export function useEditor(config: Partial<EditorConfig> = {}) {
     isLoading,
     error,
     isDirty,
+    cursorPosition,
 
     // Methods
-    initialize,
-    destroy,
     loadContent,
     getContent,
     clearContent,
-    resetState,
+    recalculateStats,
     updateStats,
+    resetState,
+    setLoading,
+    setError,
   };
 }

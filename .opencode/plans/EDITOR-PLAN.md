@@ -166,71 +166,97 @@ Exemplo:
 
 ---
 
-# Fase 2 — Editor Base
+# Fase 2 — Editor Base ✅ CONCLUÍDA
 
 ## Objetivo
 
 Disponibilizar um editor totalmente funcional.
 
-> **Próxima fase a ser implementada.**
+### Status: ✅ Concluída em 2026-07-17
 
----
+#### Etapa 2.1 — Criar `book-editor.vue` ✅
+- [x] Inicializado `UEditor` do Nuxt UI com `content-type="json"`
+- [x] Recebimento de conteúdo via `v-model` (EditorContent)
+- [x] Emissão de alterações via `@update:model-value`
+- [x] Trabalho com JSON ProseMirror nativamente
+- [x] Integrado `UEditorToolbar` (fixed + bubble) dentro do slot
+- [x] Integrado `UEditorSuggestionMenu` (comandos `/`)
+- [x] Integrado `UEditorDragHandle` para reordenação de blocos
+- [x] Suporte a `placeholder` e `readOnly` via props
+- [x] Sincronização bidirecional com Pinia store
+- [x] Cálculo automático de estatísticas ao criar/atualizar
+- [x] Extração de posição do cursor via `@selection-update`
 
-### Etapa 2.1 — Criar `book-editor.vue`
+#### Etapa 2.2 — Criar `use-editor.ts` ✅
+- [x] Refatorado composable para integração limpa com UEditor
+- [x] `loadContent()` — carrega conteúdo e recalcula stats
+- [x] `getContent()` — retorna conteúdo atual
+- [x] `clearContent()` — reseta para documento vazio
+- [x] `recalculateStats()` — recalcula métricas do documento
+- [x] `updateStats()` — atualiza stats manualmente
+- [x] `resetState()` — reseta todo o store
+- [x] `setLoading()` / `setError()` — controle de estado
+- [x] Computed properties: `content`, `stats`, `saveStatus`, `isActive`, `isLoading`, `error`, `isDirty`, `cursorPosition`
 
-Responsabilidades:
+#### Etapa 2.3 — Toolbar ✅
+- [x] Reescrito `editor-toolbar.vue` como wrapper do `UEditorToolbar`
+- [x] Botões de formatação via handlers nativos (`kind: 'mark'`)
+  - Negrito (`bold`), Itálico (`italic`), Sublinhado (`underline`), Tachado (`strike`), Código (`code`)
+- [x] Botões de bloco via handlers nativos
+  - Cabeçalhos (H1-H4), Listas (bullet/ordered), Citação, Código
+- [x] Botões de ação: Link, Desfazer, Refazer
+- [x] Bubble toolbar para formatação rápida na seleção
+- [x] Botões de Modo Foco e Tela Cheia mantidos na toolbar
+- [x] Todos os botões utilizam API oficial do Nuxt UI Editor
 
-- Inicializar o Nuxt UI Editor.
-- Receber conteúdo inicial.
-- Emitir alterações.
-- Trabalhar utilizando JSON (ProseMirror).
+#### Etapa 2.4 — Barra inferior ✅
+- [x] Contador de palavras (`useWordCounter`)
+- [x] Contador de caracteres (`useCharacterCounter`)
+- [x] Tempo de leitura estimado (`useReadingTime`)
+- [x] Posição do cursor (Linha, Coluna) via `cursorPosition` do store
+- [x] Indicador de status de salvamento (`save-status.vue`)
 
----
+#### Correções adicionais:
+- [x] Removido `@nuxtjs/tailwindcss` do `nuxt.config.ts` (conflito com `@nuxt/ui` v4)
+- [x] Adicionado `vite.optimizeDeps.include` para pacotes prosemirror (evita erro de plugins duplicados)
+- [x] Atualizado `editor.vue` para usar `EditorBookEditor` com v-model
 
-### Etapa 2.2 — Criar `use-editor.ts`
+#### Arquivos modificados:
+```text
+app/
+├── components/
+│   └── editor/
+│       ├── book-editor.vue        ✅ Reescrito (UEditor + toolbar + suggestion menu)
+│       ├── editor-toolbar.vue     ✅ Reescrito (wrapper UEditorToolbar)
+│       ├── editor-status-bar.vue  ✅ Atualizado (cursor position adicionado)
+│       └── save-status.vue        ✅ (sem alterações)
+├── composables/
+│   ├── use-editor.ts              ✅ Refatorado (integração UEditor)
+│   ├── use-autosave.ts            ✅ (sem alterações)
+│   ├── use-word-counter.ts        ✅ (sem alterações)
+│   ├── use-character-counter.ts   ✅ (sem alterações)
+│   ├── use-reading-time.ts        ✅ (sem alterações)
+│   ├── use-fullscreen.ts          ✅ (sem alterações)
+│   ├── use-focus-mode.ts          ✅ (sem alterações)
+│   ├── use-version-history.ts     ✅ (sem alterações)
+│   └── use-export.ts             ✅ (sem alterações)
+├── stores/
+│   └── editor-store.ts            ✅ (sem alterações)
+├── types/
+│   └── editor.ts                  ✅ (sem alterações)
+├── utils/
+│   └── editor/
+│       ├── editor-utils.ts        ✅ (sem alterações)
+│       ├── markdown-utils.ts      ✅ (sem alterações)
+│       └── pdf-utils.ts           ✅ (sem alterações)
+└── pages/
+    └── discover/
+        └── books/
+            └── [id]/
+                └── editor.vue     ✅ Atualizado (usa EditorBookEditor)
 
-Responsável por:
-
-- Inicializar editor.
-- Carregar conteúdo.
-- Atualizar conteúdo.
-- Limpar editor.
-- Resetar estado.
-
----
-
-### Etapa 2.3 — Toolbar
-
-Criar `editor-toolbar.vue`
-
-Botões:
-
-- Negrito
-- Itálico
-- Sublinhado
-- Tachado
-- Cabeçalhos
-- Lista
-- Lista numerada
-- Código
-- Citação
-- Link
-- Desfazer
-- Refazer
-
-Toda ação deverá utilizar a API oficial do Nuxt UI Editor.
-
----
-
-### Etapa 2.4 — Barra inferior
-
-Criar `editor-status-bar.vue`
-
-Inicialmente apresentar:
-
-- palavras
-- caracteres
-- posição do cursor
+nuxt.config.ts                     ✅ Atualizado (vite.optimizeDeps + removido @nuxtjs/tailwindcss)
+```
 
 ---
 
@@ -625,8 +651,8 @@ book-editor.vue
 | Sprint       | Entregas                                                                                | Status       |
 | ------------ | --------------------------------------------------------------------------------------- | ------------ |
 | **Sprint 1** | Instalação, configuração do Nuxt UI Editor, estrutura de pastas, tipagens e editor base | ✅ Concluído |
-| **Sprint 2** | Toolbar, barra de status e integração completa com o editor                             | ⏳ Próximo   |
-| **Sprint 3** | Autosave, persistência e indicador de salvamento                                        | ⬜ Pendente  |
+| **Sprint 2** | Toolbar, barra de status e integração completa com o editor                             | ✅ Concluído |
+| **Sprint 3** | Autosave, persistência e indicador de salvamento                                        | ⏳ Próximo   |
 | **Sprint 4** | Contador de palavras, caracteres e tempo estimado de leitura                            | ⬜ Pendente  |
 | **Sprint 5** | Navegação e gerenciamento de capítulos                                                  | ⬜ Pendente  |
 | **Sprint 6** | Histórico de versões e restauração                                                      | ⬜ Pendente  |

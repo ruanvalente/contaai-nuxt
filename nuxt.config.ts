@@ -3,7 +3,6 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   modules: [
-    "@nuxtjs/tailwindcss",
     "@nuxtjs/google-fonts",
     "@nuxtjs/supabase",
     "@pinia/nuxt",
@@ -53,5 +52,16 @@ export default defineNuxtConfig({
   },
   experimental: {
     typedPages: true,
+  },
+  vite: {
+    optimizeDeps: {
+      include: [
+        "@nuxt/ui > prosemirror-state",
+        "@nuxt/ui > prosemirror-transform",
+        "@nuxt/ui > prosemirror-model",
+        "@nuxt/ui > prosemirror-view",
+        "@nuxt/ui > prosemirror-gapcursor",
+      ],
+    },
   },
 });

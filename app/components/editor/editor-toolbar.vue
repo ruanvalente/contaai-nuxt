@@ -1,146 +1,29 @@
 <script setup lang="ts">
-import { useEditorStore } from "~/stores/editor-store";
+import type { EditorToolbarItem } from "@nuxt/ui";
+import type { Editor } from "@tiptap/vue-3";
 import { useFocusMode } from "~/composables/use-focus-mode";
 import { useFullscreen } from "~/composables/use-fullscreen";
 
-const store = useEditorStore();
-const { toggleFocusMode, isEnabled: focusMode } = useFocusMode();
-const { toggleFullscreen, fullscreenIcon, fullscreenLabel } = useFullscreen();
-
-interface ToolbarAction {
-  icon: string;
-  label: string;
-  action: () => void;
-  active?: boolean;
-  disabled?: boolean;
+interface Props {
+  editor: Editor;
+  items?: EditorToolbarItem[][];
 }
 
-const formattingActions: ToolbarAction[] = [
-  {
-    icon: "i-lucide-bold",
-    label: "Negrito",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-italic",
-    label: "Itálico",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-underline",
-    label: "Sublinhado",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-strikethrough",
-    label: "Tachado",
-    action: () => {},
-    disabled: true,
-  },
-];
+const props = defineProps<Props>();
 
-const blockActions: ToolbarAction[] = [
-  {
-    icon: "i-lucide-heading",
-    label: "Cabeçalho",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-list",
-    label: "Lista",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-list-ordered",
-    label: "Lista numerada",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-code",
-    label: "Código",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-quote",
-    label: "Citação",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-link",
-    label: "Link",
-    action: () => {},
-    disabled: true,
-  },
-];
-
-const historyActions: ToolbarAction[] = [
-  {
-    icon: "i-lucide-undo",
-    label: "Desfazer",
-    action: () => {},
-    disabled: true,
-  },
-  {
-    icon: "i-lucide-redo",
-    label: "Refazer",
-    action: () => {},
-    disabled: true,
-  },
-];
+const { toggleFocusMode, isEnabled: focusMode } = useFocusMode();
+const { toggleFullscreen, fullscreenIcon, fullscreenLabel } = useFullscreen();
 </script>
 
 <template>
   <div class="editor-toolbar border-b border-default px-4 py-2">
     <div class="flex items-center gap-1 flex-wrap">
-      <!-- Formatting Actions -->
-      <UButton
-        v-for="action in formattingActions"
-        :key="action.label"
-        :icon="action.icon"
-        :aria-label="action.label"
-        variant="ghost"
-        color="neutral"
-        size="sm"
-        :disabled="action.disabled"
-        @click="action.action"
-      />
-
-      <div class="w-px h-6 bg-default mx-1" />
-
-      <!-- Block Actions -->
-      <UButton
-        v-for="action in blockActions"
-        :key="action.label"
-        :icon="action.icon"
-        :aria-label="action.label"
-        variant="ghost"
-        color="neutral"
-        size="sm"
-        :disabled="action.disabled"
-        @click="action.action"
-      />
-
-      <div class="w-px h-6 bg-default mx-1" />
-
-      <!-- History Actions -->
-      <UButton
-        v-for="action in historyActions"
-        :key="action.label"
-        :icon="action.icon"
-        :aria-label="action.label"
-        variant="ghost"
-        color="neutral"
-        size="sm"
-        :disabled="action.disabled"
-        @click="action.action"
+      <!-- Nuxt UI Editor Toolbar -->
+      <UEditorToolbar
+        v-if="props.items && props.items.length > 0"
+        :editor="props.editor"
+        :items="props.items"
+        class="flex-1"
       />
 
       <div class="flex-1" />

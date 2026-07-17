@@ -8,6 +8,11 @@ const store = useEditorStore();
 const { formattedWordCount } = useWordCounter();
 const { formattedCharacterCount } = useCharacterCounter();
 const { formattedReadingTime } = useReadingTime();
+
+const cursorInfo = computed(() => {
+  const pos = store.cursorPosition;
+  return `Ln ${pos.line}, Col ${pos.column}`;
+});
 </script>
 
 <template>
@@ -32,6 +37,12 @@ const { formattedReadingTime } = useReadingTime();
       </span>
 
       <div class="flex-1" />
+
+      <!-- Cursor Position -->
+      <span class="flex items-center gap-1">
+        <UIcon name="i-lucide-text-cursor-input" class="h-3 w-3" />
+        {{ cursorInfo }}
+      </span>
 
       <!-- Save Status -->
       <EditorSaveStatus />

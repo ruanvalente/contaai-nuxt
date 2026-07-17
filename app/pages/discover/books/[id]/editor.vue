@@ -51,7 +51,10 @@ useHead({
       class="flex items-center justify-center min-h-[60vh]"
     >
       <div class="text-center">
-        <UIcon name="i-lucide-loader-2" class="animate-spin h-8 w-8 text-muted-foreground mx-auto" />
+        <UIcon
+          name="i-lucide-loader-2"
+          class="animate-spin h-8 w-8 text-muted-foreground mx-auto"
+        />
         <p class="mt-4 text-muted-foreground">Carregando editor...</p>
       </div>
     </div>
@@ -79,20 +82,9 @@ useHead({
     </div>
 
     <!-- Editor Content -->
-    <div v-else class="editor-container">
-      <slot />
-    </div>
+    <EditorBookEditor
+      v-else
+      placeholder="Comece a escrever seu livro..."
+    />
   </div>
 </template>
-
-<style scoped>
-.editor-page {
-  --editor-max-width: 900px;
-}
-
-.editor-container {
-  max-width: var(--editor-max-width);
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-</style>
