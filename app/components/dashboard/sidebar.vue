@@ -18,25 +18,25 @@ const route = useRoute();
 
 const navItems = [
   {
-    label: "Dashboard",
-    to: "/dashboard",
+    label: "Discover",
+    to: "/discover",
     icon: "home",
   },
   {
     label: "Explorar",
-    to: "/dashboard/explore",
+    to: "/discover/explore",
     icon: "search",
   },
   {
     label: "Minha Sessão",
-    to: "/dashboard/my-session",
+    to: "/discover/my-session",
     icon: "book",
   },
 ];
 
 function isActive(to: string): boolean {
-  if (to === "/dashboard") {
-    return route.path === "/dashboard";
+  if (to === "/discover") {
+    return route.path === "/discover";
   }
   return route.path === to || route.path.startsWith(to + "/");
 }

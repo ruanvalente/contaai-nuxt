@@ -1,48 +1,48 @@
 <script setup lang="ts">
 definePageMeta({
   title: "Entrar",
-  middleware: 'guest',
-})
+  middleware: "guest",
+});
 
-const router = useRouter()
-const { login, loading, error, clearError } = useAuthStore()
+const router = useRouter();
+const { login, loading, error, clearError } = useAuthStore();
 
-const email = ref('')
-const password = ref('')
+const email = ref("");
+const password = ref("");
 
 const formErrors = reactive({
-  email: '',
-  password: '',
-})
+  email: "",
+  password: "",
+});
 
 function validate(): boolean {
-  let valid = true
-  formErrors.email = ''
-  formErrors.password = ''
+  let valid = true;
+  formErrors.email = "";
+  formErrors.password = "";
 
   if (!email.value) {
-    formErrors.email = 'Email é obrigatório'
-    valid = false
+    formErrors.email = "Email é obrigatório";
+    valid = false;
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    formErrors.email = 'Email inválido'
-    valid = false
+    formErrors.email = "Email inválido";
+    valid = false;
   }
 
   if (!password.value) {
-    formErrors.password = 'Senha é obrigatória'
-    valid = false
+    formErrors.password = "Senha é obrigatória";
+    valid = false;
   }
 
-  return valid
+  return valid;
 }
 
 async function handleSubmit() {
-  clearError()
-  if (!validate()) return
+  clearError();
+  if (!validate()) return;
 
   try {
-    await login({ email: email.value, password: password.value })
-    router.push('/dashboard')
+    await login({ email: email.value, password: password.value });
+    router.push("/discover");
   } catch {
     // error is set by the store
   }
@@ -116,8 +116,19 @@ async function handleSubmit() {
             fill="none"
             viewBox="0 0 24 24"
           >
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
           </svg>
           Entrar
         </SharedUiButton>

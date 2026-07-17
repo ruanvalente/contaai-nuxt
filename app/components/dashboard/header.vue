@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AuthUser } from '~/types/auth';
+import type { AuthUser } from "~/types/auth";
 
 interface Props {
   user: AuthUser | null;
@@ -28,12 +28,18 @@ const emit = defineEmits<{
         stroke="currentColor"
         stroke-width="2"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
       </svg>
     </button>
 
-    <NuxtLink to="/dashboard" class="hidden lg:flex items-center gap-2 ml-2">
-      <div class="h-8 w-8 rounded-lg bg-accent flex items-center justify-center">
+    <NuxtLink to="/discover" class="hidden lg:flex items-center gap-2 ml-2">
+      <div
+        class="h-8 w-8 rounded-lg bg-accent flex items-center justify-center"
+      >
         <span class="text-white font-display font-bold text-sm">C</span>
       </div>
       <span class="font-display font-semibold text-lg text-white">ContaAI</span>
@@ -75,7 +81,7 @@ const emit = defineEmits<{
             class="h-full w-full object-cover"
           />
           <span v-else class="text-white font-medium text-sm">
-            {{ (user?.name || user?.email || 'U').charAt(0).toUpperCase() }}
+            {{ (user?.name || user?.email || "U").charAt(0).toUpperCase() }}
           </span>
         </div>
         <span class="hidden sm:block text-sm font-medium text-white">

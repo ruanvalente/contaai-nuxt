@@ -7,7 +7,7 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const { user, isInitialized, isLoading, initialize } = useAuthStore()
+const { user, isInitialized, loading, initialize } = useAuthStore()
 
 const favoriteBooks = ref<BookListItem[]>([])
 const dataLoading = ref(true)
@@ -27,7 +27,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="!isInitialized || isLoading" />
+  <div v-if="!isInitialized || loading" />
 
   <div v-else>
     <div class="mb-8">
@@ -53,7 +53,7 @@ onMounted(async () => {
         Explore obras em destaque e adicione aos favoritos
       </p>
       <NuxtLink
-        to="/dashboard/explore"
+        to="/discover/explore"
         class="inline-block mt-6 px-6 py-3 bg-accent-500 text-white rounded-full font-medium hover:bg-accent-600 transition-colors"
       >
         Explorar Obras
