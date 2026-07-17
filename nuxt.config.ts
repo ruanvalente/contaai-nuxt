@@ -7,13 +7,33 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxtjs/supabase",
     "@pinia/nuxt",
+    "@nuxt/ui",
   ],
+  ui: {
+    theme: {
+      colorMode: true,
+      colors: {
+        primary: "indigo",
+        neutral: "slate",
+      },
+    },
+  },
   supabase: {
     redirect: true,
     redirectOptions: {
       login: "/auth/login",
       callback: "/confirm",
-      exclude: ["/", "/auth/*", "/discover/explore", "/discover/categories", "/discover/library", "/discover/downloads", "/discover/favorites", "/discover/settings"],
+      exclude: [
+        "/",
+        "/auth/*",
+        "/discover/explore",
+        "/discover/categories",
+        "/discover/library",
+        "/discover/downloads",
+        "/discover/favorites",
+        "/discover/settings",
+        "/discover/books/*/editor",
+      ],
     },
   },
   googleFonts: {
@@ -22,11 +42,16 @@ export default defineNuxtConfig({
       "Playfair Display": [600, 700],
       "Cormorant Garamond": [400, 600, 700],
     },
-
     display: "swap",
     preload: true,
     prefetch: true,
     download: true,
     inject: true,
+  },
+  future: {
+    compatibilityVersion: 4,
+  },
+  experimental: {
+    typedPages: true,
   },
 });
