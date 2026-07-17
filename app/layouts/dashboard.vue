@@ -34,14 +34,12 @@ function closeSidebar() {
   <div v-if="!isInitialized" class="min-h-screen bg-primary-100" />
 
   <div v-else class="min-h-screen bg-primary-100">
-    <DashboardHeader :user="user" @toggle-sidebar="toggleSidebar" />
+    <DashboardHeader :user="user" :logging-out="loggingOut" @toggle-sidebar="toggleSidebar" @logout="handleLogout" />
 
     <DashboardSidebar
       :user="user"
       :open="sidebarOpen"
-      :logging-out="loggingOut"
       @close="closeSidebar"
-      @logout="handleLogout"
     />
 
     <main class="lg:ml-64 pt-16 min-h-screen">

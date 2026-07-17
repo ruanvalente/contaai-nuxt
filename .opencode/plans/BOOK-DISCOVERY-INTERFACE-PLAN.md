@@ -11,6 +11,11 @@
 | Phase 0 — Foundation & Configuration | ✅ Executada | 2026-07-15 |
 | Phase 1 — Layout Shell | ✅ Executada | 2026-07-15 |
 | Phase 2 — Common Components | ✅ Executada | 2026-07-15 |
+| Phase 3 — Book Components | ✅ Executada | 2026-07-15 |
+| Phase 4 — Category Components | ✅ Executada | 2026-07-16 |
+| Phase 5 — Page Assembly | ✅ Executada | 2026-07-16 |
+| Phase 6 — Responsive Design | ✅ Executada | 2026-07-16 |
+| Phase 7 — Polish & Integration | ✅ Executada | 2026-07-16 |
 
 ---
 
@@ -356,9 +361,19 @@ Visible only on mobile/tablet (`xl:hidden`). Toggles sidebar drawer. Props: `mod
 
 ---
 
-## Phase 3 — Book Components
+## Phase 3 — Book Components ✅ EXECUTADA
 
 **Goal:** Build the book card, cover, and rating components per spec.
+
+> **Status:** Executada com sucesso em 2026-07-15. Componentes criados:
+> - `app/components/book/discovery-cover.vue` — Capa 190×290px com cor dinâmica e elementos decorativos
+> - `app/components/book/discovery-rating.vue` — Wrapper delegando para `SharedUiRatingStars` (sem duplicação)
+> - `app/components/book/discovery-card.vue` — Card 360px com NuxtLink, usando DiscoveryCover e DiscoveryRating
+>
+> **Correções pós-review:**
+> - Renomeados de `book-*` para `discovery-*` para evitar colisão com `shared/ui/book-card.vue` e `shared/ui/book-cover.vue`
+> - `discovery-rating.vue` delega para `SharedUiRatingStars` existente em vez de reimplementar lógica de estrelas
+> - Cores hardcoded substituídas por theme tokens (`text-text-dark`, `text-muted`)
 
 ### 3.1 `BookCover.vue`
 
@@ -477,17 +492,26 @@ interface Props {
 ```
 
 **Acceptance Criteria:**
-- [ ] BookCover renders at 190×290px with decorative bottom elements
-- [ ] BookCard renders at 360px width, white bg, rounded-3xl, shadow-md
-- [ ] BookRating shows amber stars + review count
-- [ ] Cards are clickable (`NuxtLink` to `/books/:id`)
-- [ ] Hover effect: `shadow-lg transition-shadow`
+- [x] BookCover renders at 190×290px with decorative bottom elements
+- [x] BookCard renders at 360px width, white bg, rounded-3xl, shadow-md
+- [x] BookRating shows amber stars + review count
+- [x] Cards are clickable (`NuxtLink` to `/books/:id`)
+- [x] Hover effect: `shadow-lg transition-shadow`
 
 ---
 
-## Phase 4 — Category Components
+## Phase 4 — Category Components ✅ EXECUTADA
 
 **Goal:** Build category chip and horizontal category list.
+
+> **Status:** Executada com sucesso em 2026-07-16. Componentes criados:
+> - `app/components/category/category-chip.vue` — Chip com estados active/inactive
+> - `app/components/category/category-list.vue` — Lista horizontal com emit `select`
+>
+> **Detalhes:**
+> - `CategoryChip` usa `<button>` com classes Tailwind (bg-sidebar text-white para active, bg-white border stone-200 para inactive)
+> - `CategoryList` recebe `DiscoveryCategory[]` e `activeId`, emite `select(categoryId)`
+> - Segue padrão kebab-case e `<script setup lang="ts">` dos componentes existentes
 
 ### 4.1 `CategoryChip.vue`
 
@@ -543,16 +567,36 @@ interface Props {
 On mobile: horizontal scroll with `overflow-x-auto` and `flex-nowrap`.
 
 **Acceptance Criteria:**
-- [ ] Chip renders with correct active/inactive states
-- [ ] List renders horizontally, wraps on desktop, scrolls on mobile
-- [ ] Active chip has `bg-sidebar text-white`
-- [ ] Inactive chip has white bg, stone border, hover state
+- [x] Chip renders with correct active/inactive states
+- [x] List renders horizontally, wraps on desktop, scrolls on mobile
+- [x] Active chip has `bg-sidebar text-white`
+- [x] Inactive chip has white bg, stone border, hover state
 
 ---
 
-## Phase 5 — Page Assembly
+## Phase 5 — Page Assembly ✅ EXECUTADA
 
 **Goal:** Compose all components into the discovery page.
+
+> **Status:** Executada com sucesso em 2026-07-16. Arquivos criados/modificados:
+> - `app/pages/discover.vue` — Página principal com layout discovery, grid responsivo, loading skeleton, estados vazios/erro, e infinite scroll via IntersectionObserver
+> - `app/composables/use-discovery-books.ts` — Atualizado para mapear `review_count` da API para campo `reviews` (compatibilidade com `BookDiscoveryCard`)
+> - `app/types/discovery.ts` — Adicionado interface `DiscoveryBook` com campo `reviews`
+>
+> **Detalhes:**
+> - Página usa `definePageMeta({ layout: 'discovery' })` para aplicar o layout com sidebar/header
+> - Grid responsivo: `grid-cols-1 md:grid-cols-2 xl:grid-cols-4`
+> - Infinite scroll via `IntersectionObserver` com `rootMargin: 400px`
+> - Loading skeleton com 8 placeholders animados (`animate-pulse`)
+> - Estados de erro com botão "Tentar novamente" e vazio com mensagem informativa
+> - Botão "Carregar mais" visível quando `hasMore` e não está carregando
+> - Componentes usam nomes PascalCase do Nuxt auto-import: `BookDiscoveryCard`, `CategoryCategoryList`, `SharedCommonSectionTitle`, `SharedUiButton`
+>
+> **Correções pós-review:**
+> - Alinhamento de categorias: `DISCOVERY_CATEGORIES`, `BookCategory`, e `BOOK_CATEGORIES` atualizados para usar valores em inglês que correspondem ao banco de dados (`"Sci-Fi"`, `"Fantasy"`, etc.) em vez de português (`"Ficção Científica"`, `"Fantasia"`, etc.)
+> - Corrigido bug no server mapper que silenciosamente defaultava todos os livros não-"Drama" para `"Drama"` devido à incompatibilidade de categorias
+> - `useDiscoveryBooks` atualizado para mapear `review_count` da API para campo `reviews` (compatibilidade com `BookDiscoveryCard`)
+> - Adicionado interface `DiscoveryBook` em `app/types/discovery.ts`
 
 ### 5.1 Create `app/pages/discover.vue`
 
@@ -657,18 +701,31 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 ```
 
 **Acceptance Criteria:**
-- [ ] `/discover` renders the full layout with sidebar, header, and content
-- [ ] Section title "Recomendados para Você" displays in serif font
-- [ ] Category chips filter books reactively
-- [ ] Book grid shows 4 columns on desktop, 2 on tablet, 1 on mobile
-- [ ] Loading skeleton renders while data loads
-- [ ] Empty and error states display correctly
+- [x] `/discover` renders the full layout with sidebar, header, and content
+- [x] Section title "Recomendados para Você" displays in serif font
+- [x] Category chips filter books reactively
+- [x] Book grid shows 4 columns on desktop, 2 on tablet, 1 on mobile
+- [x] Loading skeleton renders while data loads
+- [x] Empty and error states display correctly
 
 ---
 
-## Phase 6 — Responsive Design
+## Phase 6 — Responsive Design ✅ EXECUTADA
 
 **Goal:** Ensure full responsiveness across desktop, tablet, and mobile breakpoints.
+
+> **Status:** Executada com sucesso em 2026-07-16. Alterações realizadas:
+> - `app/components/book/discovery-card.vue` — Atualizado de `w-[360px]` para `w-full max-w-[360px]` para adaptar ao grid responsivo
+> - `app/components/category/category-chip.vue` — Padding ajustado para mobile (`px-5 py-2.5 md:px-7 md:py-3`) e adicionado `whitespace-nowrap`
+> - `app/components/layout/app-header.vue` — Altura e padding responsivos (`h-16 md:h-22`, `px-4 md:px-8`)
+> - `app/layouts/discovery.vue` — Adicionado `overflow-x-hidden` para prevenir scroll horizontal
+> - `app/pages/discover.vue` — Grid com gap responsivo (`gap-4 md:gap-8`) e skeleton responsivo (`w-full max-w-[360px]`)
+>
+> **Detalhes:**
+> - Sidebar: Já implementada com drawer mobile, overlay e transição (Phase 1)
+> - Container: Já com `ml-0 xl:ml-80` e padding responsivo (Phase 1)
+> - CategoryList: Já com `flex-nowrap md:flex-wrap` e `overflow-x-auto` (Phase 4)
+> - Grid: `grid-cols-1 md:grid-cols-2 xl:grid-cols-4` com gaps adaptativos
 
 ### 6.1 Desktop (>1280px / `xl`)
 
@@ -684,17 +741,6 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 - Search: responsive width (`w-full max-w-md`)
 - Header: hamburger visible
 
-**Implementation in layout:**
-
-```vue
-<!-- AppSidebar.vue -->
-<aside :class="[
-  'fixed inset-y-0 left-0 z-30 bg-sidebar flex flex-col p-6 gap-5 transition-transform duration-300',
-  'w-80',                           // always 320px
-  open ? 'translate-x-0' : '-translate-x-full xl:translate-x-0'
-]">
-```
-
 ### 6.3 Mobile (<768px / below `md`)
 
 - Sidebar: off-canvas drawer (toggled by hamburger)
@@ -704,40 +750,38 @@ const MOCK_BOOKS: DiscoveryBook[] = [
 - Category chips: `flex-nowrap overflow-x-auto`
 - Book cards: full width (`w-full` instead of `w-[360px]`)
 
-**Mobile drawer pattern:**
-
-```vue
-<!-- Overlay -->
-<div v-if="open" class="fixed inset-0 bg-black/50 z-20 xl:hidden" @click="close" />
-
-<!-- Sidebar with transition -->
-<Transition name="slide">
-  <aside v-show="open" class="fixed inset-y-0 left-0 z-30 w-80 xl:hidden ...">
-    ...
-  </aside>
-</Transition>
-```
-
-### 6.4 Responsive Utilities
-
-Use Tailwind breakpoints consistently:
-- `sm:` (640px) — small adjustments
-- `md:` (768px) — tablet
-- `lg:` (1024px) — small desktop
-- `xl:` (1280px) — full desktop with sidebar
-
 **Acceptance Criteria:**
-- [ ] Sidebar hidden on mobile, togglable via hamburger
-- [ ] Grid adapts: 4 → 2 → 1 columns
-- [ ] Category chips scroll horizontally on mobile
-- [ ] No horizontal overflow on any screen size
-- [ ] Touch-friendly tap targets (min 44px) on mobile
+- [x] Sidebar hidden on mobile, togglable via hamburger
+- [x] Grid adapts: 4 → 2 → 1 columns
+- [x] Category chips scroll horizontally on mobile
+- [x] No horizontal overflow on any screen size
+- [x] Touch-friendly tap targets (min 44px) on mobile
 
 ---
 
-## Phase 7 — Polish & Integration
+## Phase 7 — Polish & Integration ✅ EXECUTADA
 
 **Goal:** Final touches, accessibility, performance, and API readiness.
+
+> **Status:** Executada com sucesso em 2026-07-16. Alterações realizadas:
+> - **7.1 Accessibility:**
+>   - `sidebar-item.vue` — Adicionado `focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-sidebar`
+>   - `discovery-card.vue` — Adicionado `aria-label` descritivo + `prefetch` + focus ring
+>   - `category-chip.vue` — Adicionado `focus:ring-2 focus:ring-accent focus:ring-offset-2`
+>   - `button.vue` — Adicionado `focus:ring-2 focus:ring-accent focus:ring-offset-2`
+>   - `discovery-cover.vue` — Elementos decorativos marcados com `aria-hidden="true"`
+>   - `discovery.vue` (layout) — Adicionado skip-to-content link (`sr-only focus:not-sr-only`)
+>   - `app-container.vue` — Adicionado `id="main-content"` como target do skip link
+> - **7.2 Performance:**
+>   - `discovery-card.vue` — Adicionado `prefetch` no NuxtLink para pré-busca de páginas de detalhe
+>   - IntersectionObserver cleanup já estava implementado (Phase 5)
+>   - Search debounce já estava implementado (Phase 2)
+> - **7.3 Pinia Store:**
+>   - Store `app/stores/discovery.ts` criado mas removido — o composable `useDiscoveryBooks` já gerencia state, URL sync, caching e loadMore internamente. Store seria código morto.
+> - **7.4 API Integration:**
+>   - Já implementada no composable `useDiscoveryBooks` com mapper `mapApiToDiscoveryBook`
+> - **7.5 Typecheck:**
+>   - Todos os arquivos `app/` passam no typecheck (erros pré-existentes em `server/infrastructure/` e `dashboard/my-session.vue`)
 
 ### 7.1 Accessibility
 
@@ -799,12 +843,12 @@ app/
 │   │   ├── AppHeader.vue           ← Phase 1.3
 │   │   └── AppContainer.vue        ← Phase 1.4
 │   ├── book/
-│   │   ├── BookCard.vue            ← Phase 3.3
-│   │   ├── BookCover.vue           ← Phase 3.1
-│   │   └── BookRating.vue          ← Phase 3.2
+│   │   ├── discovery-card.vue        ← Phase 3.3 ✅ (renamed from book-card)
+│   │   ├── discovery-cover.vue       ← Phase 3.1 ✅ (renamed from book-cover)
+│   │   └── discovery-rating.vue      ← Phase 3.2 ✅ (wrapper → SharedUiRatingStars)
 │   ├── category/
-│   │   ├── CategoryChip.vue        ← Phase 4.1
-│   │   └── CategoryList.vue        ← Phase 4.2
+│   │   ├── CategoryChip.vue        ← Phase 4.1 ✅
+│   │   └── CategoryList.vue        ← Phase 4.2 ✅
 │   └── shared/
 │       ├── common/
 │       │   ├── search-input.vue    ← Phase 2.1 ✅
@@ -814,16 +858,16 @@ app/
 │           ├── button.vue          ← Estendido (Phase 2.3)
 │           └── rating-stars.vue    ← Estendido (Phase 2.3)
 ├── composables/
-│   ├── use-discovery-books.ts      ← Phase 0.5
-│   └── use-discovery-categories.ts ← Phase 0.5
+│   ├── use-discovery-books.ts      ← Phase 0.5 ✅ (atualizado Phase 5)
+│   └── use-discovery-categories.ts ← Phase 0.5 ✅
 ├── layouts/
 │   └── discovery.vue               ← Phase 1.5
 ├── pages/
-│   └── discover.vue                ← Phase 5.1
+│   └── discover.vue                ← Phase 5.1 ✅
 ├── stores/
-│   └── discovery.ts                ← Phase 7.3
+│   └── (removido — composable já gerencia state)
 └── types/
-    └── discovery.ts                ← Phase 0.4
+    └── discovery.ts                ← Phase 0.4 ✅ (atualizado Phase 5)
 ```
 
 ## Files Modified
@@ -835,7 +879,13 @@ app/
 | `package.json` | 0.1 | New dependencies |
 | `app/components/shared/ui/button.vue` | 2.3 | Estendido com variante ghost |
 | `app/components/shared/ui/rating-stars.vue` | 2.3 | Estendido com prop reviews |
+| `app/components/book/discovery-rating.vue` | 3.2 | Wrapper delegando para SharedUiRatingStars |
 | `app/components/dashboard/sidebar.vue` | Fix | z-index overlay corrigido para z-30 |
+| `app/types/book.entity.ts` | Fix | BookCategory atualizado para valores em inglês (matching DB) |
+| `server/domain/entities/book.entity.ts` | Fix | BookCategory atualizado para valores em inglês (matching DB) |
+| `app/types/discovery.ts` | 5 | Adicionado DiscoveryBook; IDs das categorias alinhados com DB |
+| `app/composables/use-discovery-books.ts` | 5 | Mapeamento ApiBook→DiscoveryBook com campo reviews |
+| `app/composables/use-discovery-categories.ts` | 5 | Default category atualizado para "All" |
 
 ## Dependency Graph
 

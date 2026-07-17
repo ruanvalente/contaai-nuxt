@@ -2,26 +2,26 @@
 const isMenuOpen = ref(false);
 const menuId = "mobile-menu";
 
-const router = useRouter()
+const router = useRouter();
 
 const navItems = [
   { label: "Home", href: "#hero", external: false },
-  { label: "Explorar", href: "/dashboard/explore", external: true },
-  { label: "Minha Sessão", href: "/dashboard/my-session", external: true },
+  { label: "Explorar", href: "/discover/explore", external: true },
+  { label: "Minha Sessão", href: "/discover/my-session", external: true },
   { label: "Comunidade", href: "#community", external: false },
   { label: "Contribuir", href: "#contribute", external: false },
 ];
 
-function handleNavClick(item: typeof navItems[number]) {
-  isMenuOpen.value = false
+function handleNavClick(item: (typeof navItems)[number]) {
+  isMenuOpen.value = false;
   if (item.external) {
-    router.push(item.href)
+    router.push(item.href);
   } else {
-    const el = document.querySelector(item.href)
+    const el = document.querySelector(item.href);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" })
+      el.scrollIntoView({ behavior: "smooth" });
     } else {
-      router.push("/")
+      router.push("/");
     }
   }
 }
@@ -103,7 +103,11 @@ function handleNavClick(item: typeof navItems[number]) {
               </button>
             </li>
             <li class="flex flex-col gap-3 pt-4 border-t border-primary-300">
-              <NuxtLink to="/auth/login" class="w-full" @click="isMenuOpen = false">
+              <NuxtLink
+                to="/auth/login"
+                class="w-full"
+                @click="isMenuOpen = false"
+              >
                 <SharedUiButton variant="secondary" class="w-full">
                   Entrar
                 </SharedUiButton>
