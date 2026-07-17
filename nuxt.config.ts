@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: "/auth/login",
       callback: "/confirm",
-      exclude: ["/", "/auth/*", "/discover/explore"],
+      exclude: ["/", "/auth/*", "/discover/explore", "/discover/categories", "/discover/library", "/discover/downloads", "/discover/favorites", "/discover/settings"],
     },
   },
   googleFonts: {
