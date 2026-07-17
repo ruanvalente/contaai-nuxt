@@ -4,7 +4,7 @@ import { mapToBook } from "~/types/book.entity";
 
 definePageMeta({
   title: "ContaAI",
-})
+});
 
 const router = useRouter();
 const { user, isInitialized, initialize } = useAuthStore();
@@ -18,7 +18,7 @@ onMounted(() => {
 
 watch([user, isInitialized], ([newUser, initialized]) => {
   if (initialized && newUser) {
-    router.replace("/dashboard");
+    router.replace("/discover");
   }
 });
 

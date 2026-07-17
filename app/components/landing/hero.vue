@@ -1,16 +1,21 @@
 <script setup lang="ts">
-const router = useRouter()
-const isVisible = ref(false)
+const router = useRouter();
+const isVisible = ref(false);
 
 onMounted(() => {
-  isVisible.value = true
-})
+  isVisible.value = true;
+});
 </script>
 
 <template>
-  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden scroll-mt-20">
+  <section
+    id="hero"
+    class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden scroll-mt-20"
+  >
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-display font-bold text-gray-900 opacity-[0.03] whitespace-nowrap">
+      <span
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-display font-bold text-gray-900 opacity-[0.03] whitespace-nowrap"
+      >
         CONTOS & HISTÓRIAS
       </span>
     </div>
@@ -20,7 +25,7 @@ onMounted(() => {
         <h1
           :class="[
             'text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 leading-tight mb-6 transition-all duration-700',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5',
           ]"
         >
           Descubra Autores e Suas
@@ -30,7 +35,7 @@ onMounted(() => {
         <p
           :class="[
             'text-lg md:text-xl text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-200',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5',
           ]"
         >
           Uma plataforma de compartilhamento de contos, histórias e o que você
@@ -40,10 +45,14 @@ onMounted(() => {
         <div
           :class="[
             'flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-700 delay-500',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5',
           ]"
         >
-          <SharedUiButton variant="primary" class="px-8 py-4 text-lg" @click="router.push('/dashboard/explore')">
+          <SharedUiButton
+            variant="primary"
+            class="px-8 py-4 text-lg"
+            @click="router.push('/discover/explore')"
+          >
             Explorar
           </SharedUiButton>
           <SharedUiButton variant="secondary" class="px-8 py-4 text-lg gap-2">

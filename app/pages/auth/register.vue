@@ -1,79 +1,80 @@
 <script setup lang="ts">
 definePageMeta({
   title: "Criar Conta",
-  middleware: 'guest',
-})
+  middleware: "guest",
+});
 
-const router = useRouter()
-const { register, loading, error, clearError } = useAuthStore()
+const router = useRouter();
+const { register, loading, error, clearError } = useAuthStore();
 
-const name = ref('')
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
-const successMessage = ref('')
+const name = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const successMessage = ref("");
 
 const formErrors = reactive({
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-})
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
 
 function validate(): boolean {
-  let valid = true
-  formErrors.name = ''
-  formErrors.email = ''
-  formErrors.password = ''
-  formErrors.confirmPassword = ''
+  let valid = true;
+  formErrors.name = "";
+  formErrors.email = "";
+  formErrors.password = "";
+  formErrors.confirmPassword = "";
 
   if (!name.value.trim()) {
-    formErrors.name = 'Nome é obrigatório'
-    valid = false
+    formErrors.name = "Nome é obrigatório";
+    valid = false;
   }
 
   if (!email.value) {
-    formErrors.email = 'Email é obrigatório'
-    valid = false
+    formErrors.email = "Email é obrigatório";
+    valid = false;
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    formErrors.email = 'Email inválido'
-    valid = false
+    formErrors.email = "Email inválido";
+    valid = false;
   }
 
   if (!password.value) {
-    formErrors.password = 'Senha é obrigatória'
-    valid = false
+    formErrors.password = "Senha é obrigatória";
+    valid = false;
   } else if (password.value.length < 8) {
-    formErrors.password = 'Mínimo de 8 caracteres'
-    valid = false
+    formErrors.password = "Mínimo de 8 caracteres";
+    valid = false;
   }
 
   if (!confirmPassword.value) {
-    formErrors.confirmPassword = 'Confirme sua senha'
-    valid = false
+    formErrors.confirmPassword = "Confirme sua senha";
+    valid = false;
   } else if (password.value !== confirmPassword.value) {
-    formErrors.confirmPassword = 'Senhas não coincidem'
-    valid = false
+    formErrors.confirmPassword = "Senhas não coincidem";
+    valid = false;
   }
 
-  return valid
+  return valid;
 }
 
 async function handleSubmit() {
-  clearError()
-  if (!validate()) return
+  clearError();
+  if (!validate()) return;
 
   try {
     const data = await register({
       name: name.value.trim(),
       email: email.value,
       password: password.value,
-    })
+    });
 
     if (data.session) {
-      router.push('/dashboard')
+      router.push("/discover");
     } else {
-      successMessage.value = 'Conta criada! Verifique seu email para confirmar o cadastro.'
+      successMessage.value =
+        "Conta criada! Verifique seu email para confirmar o cadastro.";
     }
   } catch {
     // error is set by the store
@@ -154,7 +155,10 @@ async function handleSubmit() {
             type="password"
             placeholder="••••••••"
           />
-          <p v-if="formErrors.confirmPassword" class="mt-1.5 text-sm text-red-500">
+          <p
+            v-if="formErrors.confirmPassword"
+            class="mt-1.5 text-sm text-red-500"
+          >
             {{ formErrors.confirmPassword }}
           </p>
         </div>
@@ -172,8 +176,19 @@ async function handleSubmit() {
             fill="none"
             viewBox="0 0 24 24"
           >
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
           </svg>
           Criar conta
         </SharedUiButton>

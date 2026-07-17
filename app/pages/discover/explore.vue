@@ -94,7 +94,7 @@ onUnmounted(() => {
 
     <form
       method="GET"
-      action="/dashboard/explore"
+      action="/discover/explore"
       class="relative w-full sm:w-72 mb-8"
       @submit.prevent="onSearchSubmit"
     >

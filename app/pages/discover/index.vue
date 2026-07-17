@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: "Dashboard",
+  title: "Discover",
   middleware: "auth",
   layout: "dashboard",
 });
@@ -70,7 +70,7 @@ function cancelDelete() {
       <h1
         class="text-2xl md:text-3xl font-display font-semibold text-gray-900 mb-2"
       >
-        Dashboard
+        Discover
       </h1>
       <p class="text-gray-600">
         Gerencie seus livros e acompanhe suas estatísticas

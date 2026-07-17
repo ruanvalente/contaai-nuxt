@@ -98,7 +98,7 @@ const handleCategoryChange = (category: Category) => {
 
       <div v-if="books.length > 0" class="mt-12 text-center">
         <NuxtLink
-          to="/dashboard/explore"
+          to="/discover/explore"
           class="inline-flex items-center gap-2 px-6 py-3 bg-accent-500 text-white rounded-full font-medium hover:bg-accent-600 transition-colors"
         >
           Ver todos os livros

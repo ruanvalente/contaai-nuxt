@@ -8,7 +8,70 @@ A rota `dashboard` deixará de ser a página principal da aplicação. A partir 
 
 ---
 
-## 1. Migração da rota principal
+## Histórico de Execução
+
+### Fase 1 – Migração da rota principal e sub-rotas
+
+**Status:** Concluída
+**Duração:** ~8 minutos
+**Data:** 2026-07-17
+
+#### O que foi feito:
+
+1. **Criação da estrutura de páginas `discover/`**
+   - Criado `pages/discover/index.vue` (home autenticada, com Stats, QuickActions, BookGrid, CreateBookModal)
+   - Criado `pages/discover/explore.vue` (exploração de livros com busca, categorias e scroll infinito)
+   - Criado `pages/discover/my-session.vue` (favoritos e histórico de leitura)
+   - Removida a pasta `pages/dashboard/` (rotas obsoletas)
+
+2. **Atualização de redirects de autenticação**
+   - `pages/auth/login.vue`: `router.push('/dashboard')` → `router.push('/discover')`
+   - `pages/auth/register.vue`: `router.push('/dashboard')` → `router.push('/discover')`
+   - `middleware/guest.ts`: `navigateTo('/dashboard')` → `navigateTo('/discover')`
+   - `pages/index.vue`: `router.replace("/dashboard")` → `router.replace("/discover")`
+
+3. **Atualização de configuração**
+   - `nuxt.config.ts`: exclude `"/dashboard/explore"` → `"/discover/explore"`
+
+4. **Atualização de componentes de navegação**
+   - `components/dashboard/sidebar.vue`: todos os `navItems` apontam para `/discover/*`, label "Dashboard" → "Discover", lógica de `isActive` atualizada
+   - `components/dashboard/header.vue`: logo link `/dashboard` → `/discover`
+   - `components/dashboard/quick-actions.vue`: links `/dashboard/explore` e `/dashboard/my-session` → `/discover/explore` e `/discover/my-session`
+
+5. **Atualização de componentes landing**
+   - `components/landing/header.vue`: nav items `/dashboard/explore` e `/dashboard/my-session` → `/discover/*`
+   - `components/landing/hero.vue`: botão Explorar `/dashboard/explore` → `/discover/explore`
+   - `components/landing/books-showcase.vue`: link "Ver todos os livros" → `/discover/explore`
+
+6. **Correção de bug pré-existente**
+   - `my-session.vue`: `isLoading` (inexistente no composable) → `loading` (propriedade correta do `useAuthStore`)
+
+#### Arquivos modificados (13):
+| Arquivo | Alteração |
+|---|---|
+| `app/pages/discover/index.vue` | Criado (migrado de dashboard) |
+| `app/pages/discover/explore.vue` | Criado (migrado de dashboard) |
+| `app/pages/discover/my-session.vue` | Criado (migrado de dashboard) |
+| `app/pages/dashboard/*` | Removidos (3 arquivos) |
+| `app/pages/auth/login.vue` | Redirect → /discover |
+| `app/pages/auth/register.vue` | Redirect → /discover |
+| `app/pages/index.vue` | Redirect → /discover |
+| `app/middleware/guest.ts` | Redirect → /discover |
+| `nuxt.config.ts` | Supabase exclude → /discover/explore |
+| `app/components/dashboard/sidebar.vue` | Nav items → /discover/* |
+| `app/components/dashboard/header.vue` | Logo link → /discover |
+| `app/components/dashboard/quick-actions.vue` | Action links → /discover/* |
+| `app/components/landing/header.vue` | Nav links → /discover/* |
+| `app/components/landing/hero.vue` | Explore button → /discover/explore |
+| `app/components/landing/books-showcase.vue` | Ver todos → /discover/explore |
+
+#### Verificação:
+- `nuxt typecheck`: **0 erros novos** no `app/` (erros pré-existentes no `server/` relacionados a `Database` types ausente)
+- Nenhuma referência restante a rotas `/dashboard` em código de navegação
+
+---
+
+## 1. Migração da rota principal ✅
 
 * A rota `dashboard` deverá ser substituída por `discover`.
 * Após o login, o usuário deverá ser redirecionado automaticamente para `/discover`.
@@ -16,7 +79,7 @@ A rota `dashboard` deixará de ser a página principal da aplicação. A partir 
 
 ---
 
-## 2. Migração das sub-rotas
+## 2. Migração das sub-rotas ✅
 
 Atualmente a rota `dashboard` possui as seguintes sub-rotas:
 
@@ -35,7 +98,7 @@ Atualize toda a navegação da aplicação para utilizar os novos caminhos.
 
 ---
 
-## 3. Ações Rápidas
+## 3. Ações Rápidas ✅
 
 Na tela principal do antigo `dashboard` existe um componente chamado **Ações Rápidas**, contendo os seguintes atalhos:
 
