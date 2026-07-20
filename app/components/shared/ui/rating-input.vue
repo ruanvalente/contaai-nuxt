@@ -22,8 +22,8 @@ const emit = defineEmits<{
         size === 'sm' ? 'text-xs' : 'text-sm',
         'transition-colors',
         userRating !== null && i <= userRating
-          ? 'text-yellow-500'
-          : 'text-gray-300 hover:text-yellow-400'
+          ? 'text-warning'
+          : 'text-muted/40 hover:text-warning'
       ]"
       @click="emit('rate', i)"
     >

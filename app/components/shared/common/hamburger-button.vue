@@ -11,14 +11,14 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <button
-    type="button"
-    class="xl:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C9A87C]/20 transition-colors"
+  <UButton
+    icon
+    variant="ghost"
+    class="xl:hidden"
     :aria-expanded="modelValue"
     aria-label="Abrir menu de navegação"
     @click="emit('update:modelValue', !modelValue)"
   >
-    <LucideMenu v-if="!modelValue" class="w-6 h-6" />
-    <LucideX v-else class="w-6 h-6" />
-  </button>
+    <UIcon :name="modelValue ? 'i-lucide-x' : 'i-lucide-menu'" class="w-6 h-6" />
+  </UButton>
 </template>

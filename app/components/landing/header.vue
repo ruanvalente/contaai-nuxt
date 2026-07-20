@@ -29,59 +29,54 @@ function handleNavClick(item: (typeof navItems)[number]) {
 
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 bg-primary-100/80 backdrop-blur-md border-b border-primary-300"
+    class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md border-b border-default"
   >
     <SharedUiContainer>
       <nav class="flex items-center justify-between h-20">
         <NuxtLink to="/" class="flex items-center gap-2">
-          <span class="text-2xl font-display font-bold text-gray-900">
-            Conta<span class="text-accent-500">AI</span>
+          <span class="text-2xl font-display font-bold text-highlight">
+            Conta<span class="text-primary">AI</span>
           </span>
         </NuxtLink>
 
         <ul class="hidden md:flex items-center gap-8">
           <li v-for="item in navItems" :key="item.label">
-            <button
-              class="text-gray-700 hover:text-accent-500 transition-colors font-sans text-sm"
+            <UButton
+              variant="ghost"
+              color="neutral"
+              class="text-muted hover:text-primary transition-colors font-sans text-sm"
               @click="handleNavClick(item)"
             >
               {{ item.label }}
-            </button>
+            </UButton>
           </li>
         </ul>
 
         <div class="hidden md:flex items-center gap-4">
-          <NuxtLink to="/auth/login">
-            <SharedUiButton variant="secondary" class="px-5 py-2 text-sm">
-              Entrar
-            </SharedUiButton>
-          </NuxtLink>
-          <NuxtLink to="/auth/register">
-            <SharedUiButton variant="primary" class="px-5 py-2 text-sm">
-              Criar Conta
-            </SharedUiButton>
-          </NuxtLink>
+          <UButton
+            to="/auth/login"
+            variant="outline"
+            color="neutral"
+            label="Entrar"
+            class="px-5 py-2 text-sm"
+          />
+          <UButton
+            to="/auth/register"
+            label="Criar Conta"
+            class="px-5 py-2 text-sm"
+          />
         </div>
 
-        <button
-          class="md:hidden p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
-          @click="isMenuOpen = !isMenuOpen"
+        <UButton
+          :icon="isMenuOpen ? 'i-lucide-x' : 'i-lucide-menu'"
+          variant="ghost"
+          color="neutral"
+          class="md:hidden"
           :aria-expanded="isMenuOpen"
           :aria-controls="menuId"
           :aria-label="isMenuOpen ? 'Fechar menu' : 'Abrir menu'"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path v-if="isMenuOpen" d="M6 6l12 12M6 18L18 6" />
-            <path v-else d="M3 12h18M3 6h18M3 18h18" />
-          </svg>
-        </button>
+          @click="isMenuOpen = !isMenuOpen"
+        />
       </nav>
     </SharedUiContainer>
 
@@ -89,38 +84,36 @@ function handleNavClick(item: (typeof navItems)[number]) {
       <div
         v-if="isMenuOpen"
         :id="menuId"
-        class="md:hidden bg-primary-100 border-t border-primary-300"
+        class="md:hidden bg-surface border-t border-default"
         role="menu"
       >
         <SharedUiContainer>
           <ul class="py-4 flex flex-col gap-4">
             <li v-for="item in navItems" :key="item.label">
-              <button
-                class="text-gray-700 hover:text-accent-500 transition-colors font-sans text-base block py-2 w-full text-left"
+              <UButton
+                variant="ghost"
+                color="neutral"
+                class="text-muted hover:text-primary transition-colors font-sans text-base block py-2 w-full text-left justify-start"
                 @click="handleNavClick(item)"
               >
                 {{ item.label }}
-              </button>
+              </UButton>
             </li>
-            <li class="flex flex-col gap-3 pt-4 border-t border-primary-300">
-              <NuxtLink
+            <li class="flex flex-col gap-3 pt-4 border-t border-default">
+              <UButton
                 to="/auth/login"
+                variant="outline"
+                color="neutral"
+                label="Entrar"
                 class="w-full"
                 @click="isMenuOpen = false"
-              >
-                <SharedUiButton variant="secondary" class="w-full">
-                  Entrar
-                </SharedUiButton>
-              </NuxtLink>
-              <NuxtLink
+              />
+              <UButton
                 to="/auth/register"
+                label="Criar Conta"
                 class="w-full"
                 @click="isMenuOpen = false"
-              >
-                <SharedUiButton variant="primary" class="w-full">
-                  Criar Conta
-                </SharedUiButton>
-              </NuxtLink>
+              />
             </li>
           </ul>
         </SharedUiContainer>

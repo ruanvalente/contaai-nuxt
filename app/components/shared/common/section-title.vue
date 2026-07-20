@@ -11,7 +11,7 @@ withDefaults(defineProps<Props>(), {
 <template>
   <component
     :is="tag"
-    class="font-serif font-bold text-[40px] text-[#2F241C] leading-tight"
+    class="font-serif font-bold text-[40px] text-highlight leading-tight"
   >
     <slot />
   </component>

@@ -15,7 +15,7 @@ defineProps<Props>()
   <NuxtLink
     :to="`/books/${id}`"
     prefetch
-    class="w-full max-w-[360px] bg-white rounded-3xl shadow-md p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+    class="w-full max-w-[360px] bg-surface rounded-3xl shadow-md p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
   >
     <BookDiscoveryCover :title="title" :cover-color="coverColor" />
 

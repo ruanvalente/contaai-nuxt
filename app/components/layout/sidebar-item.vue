@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Compass, Grid3X3, BookOpen, Download, Heart } from "lucide-vue-next";
-
 interface Props {
   icon: string;
   label: string;
@@ -14,31 +12,24 @@ const emit = defineEmits<{
   navigate: [];
 }>();
 
-const iconMap: Record<string, any> = {
-  Compass,
-  Grid3X3,
-  BookOpen,
-  Download,
-  Heart,
-};
-
-const iconComponent = computed(() => iconMap[icon] || Compass);
-
 function onClick() {
   emit('navigate');
 }
 </script>
 
 <template>
-  <NuxtLink
+  <UButton
     :to="href"
+    :icon="icon"
+    :color="active ? 'primary' : 'neutral'"
+    :variant="active ? 'solid' : 'ghost'"
     :class="[
-      'flex items-center gap-4 px-6 py-4 rounded-2xl transition duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-sidebar',
-      active ? 'bg-accent text-white' : 'text-accent hover:bg-sidebar-hover',
+      'justify-start gap-4 px-6 py-4 rounded-2xl transition duration-200',
+      active ? 'text-white' : 'text-accent hover:bg-white/10',
     ]"
+    :ui="{ leadingIcon: 'w-5 h-5' }"
     @click="onClick"
   >
-    <component :is="iconComponent" class="w-5 h-5" />
     <span class="font-medium text-sm">{{ label }}</span>
-  </NuxtLink>
+  </UButton>
 </template>

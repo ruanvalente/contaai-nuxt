@@ -84,12 +84,10 @@ onUnmounted(() => {
 <template>
   <div>
     <div class="mb-8">
-      <h1
-        class="text-3xl md:text-4xl font-display font-semibold text-gray-900 mb-2"
-      >
+      <h1 class="text-3xl md:text-4xl font-display font-semibold text-highlight mb-2">
         Explorar
       </h1>
-      <p class="text-gray-600">Descubra novas histórias e autores</p>
+      <p class="text-muted">Descubra novas histórias e autores</p>
     </div>
 
     <form
@@ -103,22 +101,12 @@ onUnmounted(() => {
         name="category"
         :value="route.query.category || ''"
       />
-      <svg
-        class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.35-4.35" />
-      </svg>
-      <input
+      <UInput
         v-model="searchQuery"
         name="search"
-        type="text"
+        icon="i-lucide-search"
         placeholder="Buscar livros..."
-        class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-shadow"
+        class="w-full"
       />
     </form>
 
@@ -132,14 +120,15 @@ onUnmounted(() => {
             category: cat === 'All' ? undefined : cat,
           },
         }"
-        :class="[
-          'px-4 py-2 rounded-full text-sm font-medium transition-colors',
-          currentCategory === cat
-            ? 'bg-accent-500 text-white'
-            : 'bg-primary-200 text-gray-700 hover:bg-primary-300',
-        ]"
       >
-        {{ cat === "All" ? "Todas" : cat }}
+        <UBadge
+          :color="currentCategory === cat ? 'primary' : 'neutral'"
+          :variant="currentCategory === cat ? 'solid' : 'subtle'"
+          size="lg"
+          class="cursor-pointer"
+        >
+          {{ cat === "All" ? "Todas" : cat }}
+        </UBadge>
       </NuxtLink>
     </div>
 
@@ -147,26 +136,27 @@ onUnmounted(() => {
       v-if="isLoading"
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
     >
-      <div v-for="i in 10" :key="i" class="animate-pulse">
-        <div class="bg-gray-300 rounded-lg w-full aspect-[2/3]" />
-        <div class="mt-3 h-4 bg-gray-300 rounded w-3/4" />
-        <div class="mt-1 h-3 bg-gray-200 rounded w-1/2" />
+      <div v-for="i in 10" :key="i">
+        <USkeleton class="aspect-[2/3] w-full rounded-lg" />
+        <USkeleton class="mt-3 h-4 w-3/4" />
+        <USkeleton class="mt-1 h-3 w-1/2" />
       </div>
     </div>
 
     <div v-else-if="error" class="text-center py-20">
-      <p class="text-red-500 text-lg">{{ error }}</p>
-      <button
-        class="mt-4 px-6 py-2 bg-accent-500 text-white rounded-full text-sm font-medium hover:bg-accent-600 transition-colors"
+      <p class="text-error text-lg">{{ error }}</p>
+      <UButton
+        label="Tentar novamente"
+        color="primary"
+        variant="solid"
+        class="mt-4"
         @click="onRetry"
-      >
-        Tentar novamente
-      </button>
+      />
     </div>
 
     <div v-else-if="books.length === 0" class="text-center py-20">
-      <p class="text-gray-500 text-lg">Nenhuma obra encontrada</p>
-      <p class="text-gray-400 text-sm mt-2">
+      <p class="text-muted text-lg">Nenhuma obra encontrada</p>
+      <p class="text-muted/70 text-sm mt-2">
         {{
           searchQuery
             ? "Tente ajustar sua busca ou filtro"
@@ -192,9 +182,7 @@ onUnmounted(() => {
       </div>
 
       <div v-if="isLoadingMore" class="flex justify-center py-8">
-        <div
-          class="w-8 h-8 border-4 border-accent-500 border-t-transparent rounded-full animate-spin"
-        />
+        <UIcon name="i-lucide-loader-2" class="h-8 w-8 animate-spin text-primary" />
       </div>
 
       <div v-if="hasMore" ref="sentinel" class="h-4" />

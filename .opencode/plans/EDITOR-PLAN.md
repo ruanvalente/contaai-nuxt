@@ -259,79 +259,214 @@ nuxt.config.ts                     ✅ Atualizado (vite.optimizeDeps + removido 
 ```
 
 ---
-
-# Fase 3 — Autosave
+# Fase 3 — Autosave ✅ CONCLUÍDA
 
 ## Objetivo
 
 Garantir que nenhum conteúdo seja perdido.
 
----
+### Status: ✅ Concluída em 2026-07-17
 
-### Etapa 3.1 — Criar `use-autosave.ts`
+#### Etapa 3.1 — Criar `use-autosave.ts` ✅
+- [x] Composable implementado com debounce de 3 segundos
+- [x] Detecção automática de alterações via watcher no `isDirty`
+- [x] Suporte a save handler configurável via `setSaveHandler()`
+- [x] Métodos para habilitar/desabilitar auto-save
+- [x] Limpeza adequada com `onUnmounted`
+- [x] Salvamento manual via `saveNow()`
 
-Responsabilidades:
+#### Etapa 3.2 — Indicador de salvamento ✅
+- [x] `save-status.vue` implementado com três estados
+- [x] Estados visuais: Salvando (spinner), Salvo (check), Erro (alerta)
+- [x] Texto relativo: "Agora", "1 min atrás", etc.
+- [x] Ícones Lucide para cada estado
+- [x] Integração com `editor-status-bar.vue`
 
-- detectar alterações;
-- aplicar debounce;
-- disparar salvamento.
+#### Etapa 3.3 — Persistência ✅
+- [x] API `server/api/editor/chapter/[id].put.ts` para salvar capítulo
+- [x] API `server/api/editor/chapter/[id].get.ts` para carregar capítulo
+- [x] API `server/api/editor/chapters/index.get.ts` para listar capítulos
+- [x] Integração com Supabase para persistência no banco de dados
+- [x] Verificação de propriedade (ownership) em todas as APIs
+- [x] Formato JSONB para conteúdo ProseMirror
 
-Tempo sugerido:
+#### Etapa 3.4 — Recuperação ✅
+- [x] Carregamento automático ao abrir o editor
+- [x] Recuperação do último conteúdo salvo
+- [x] Suporte a shortcut `Ctrl+S` / `Cmd+S` para salvamento manual
+- [x] Tratamento de erros com mensagens amigáveis
 
-- 3 segundos após parar de digitar.
-
----
-
-### Etapa 3.2 — Indicador de salvamento
-
-Criar:
-
-`save-status.vue`
-
-Estados:
-
-- Salvando...
-- Salvo
-- Erro ao salvar
-
----
-
-### Etapa 3.3 — Persistência
-
-Fluxo:
-
-```
-Editor
-
-↓
-
-Mudança
-
-↓
-
-Debounce
-
-↓
-
-API
-
-↓
-
-Atualizar banco
-
-↓
-
-Atualizar interface
+#### Migration criada:
+```sql
+-- 044_create_chapters.sql
+CREATE TABLE chapters (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  document_id UUID REFERENCES user_books(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT DEFAULT 'Novo Capítulo',
+  content JSONB, -- ProseMirror JSON
+  "order" INTEGER DEFAULT 0,
+  word_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
+#### Arquivos criados/modificados:
+```text
+server/
+├── api/
+│   └── editor/
+│       ├── chapter/
+│       │   ├── [id].get.ts     ✅ Criado (carregar capítulo)
+│       │   └── [id].put.ts     ✅ Criado (salvar capítulo)
+│       └── chapters/
+│           └── index.get.ts    ✅ Criado (listar capítulos)
+
+supabase/
+└── migrations/
+    └── 044_create_chapters.sql ✅ Criado (tabela chapters)
+
+app/
+├── pages/
+│   └── discover/
+│       └── books/
+│           └── [id]/
+│               └── editor.vue  ✅ Atualizado (integração API)
+```
+
 ---
 
-### Etapa 3.4 — Recuperação
+# Fase 3.5 — Migração para Nuxt UI (Todos os Componentes) ✅ CONCLUÍDA
 
-Ao abrir novamente:
+## Objetivo
 
-- recuperar última versão;
-- restaurar cursor.
+Substituir classes Tailwind CSS manuais por componentes Nuxt UI em toda a aplicação, eliminando dependência de styling manual e corrigindo o bug de carregamento do TailwindCSS v4.
+
+### Status: ✅ Concluída em 2026-07-17
+
+#### Etapa 3.5.1 — Setup do TailwindCSS v4 ✅
+- [x] Removido `@nuxtjs/tailwindcss` (incompatível com TailwindCSS v4)
+- [x] Criado `app/assets/css/main.css` com `@import "tailwindcss"` + bloco `@theme`
+- [x] Deletado `tailwind.config.ts` (configuração movida para CSS-first)
+- [x] Mapeadas todas as cores customizadas (`sidebar`, `accent`, `book-bg`, `text-dark`, primary/accent variants)
+- [x] Mapeadas fontes customizadas (Inter, Playfair Display, Cormorant Garamond)
+
+#### Etapa 3.5.2 — Componentes Shared UI ✅
+- [x] `button.vue` → `UButton`
+- [x] `input.vue` → `UInput` + `UFormField`
+- [x] `card.vue` → `UCard`
+- [x] `badge.vue` → `UBadge`
+- [x] `toast.vue` → `UAlert`
+- [x] `skeleton-text.vue` → `USkeleton`
+- [x] `container.vue` → `UContainer`
+- [x] `icons.vue` → `UIcon` (i-lucide-*)
+- [x] `metrics-card.vue` → `UCard`
+- [x] `favorite-button.vue` → `UButton`
+- [x] `hamburger-button.vue` → `UButton`
+- [x] `search-input.vue` → `UInput`
+
+#### Etapa 3.5.3 — Layout Components ✅
+- [x] `app-sidebar.vue` → `UIcon`
+- [x] `sidebar-item.vue` → `UButton`
+- [x] `app-header.vue` → `UButton` + `UAvatar`
+- [x] `app-container.vue` → removidas cores hardcoded
+- [x] `dashboard.vue` layout → `UContainer`
+
+#### Etapa 3.5.4 — Dashboard Components ✅
+- [x] `sidebar.vue` → `UButton` com `UIcon`
+- [x] `header.vue` → `UButton` + `UAvatar` + `UIcon`
+- [x] `book-card.vue` → `UCard` + `UBadge` + `UButton`
+- [x] `quick-actions.vue` → `UButton` com `UIcon`
+- [x] `empty-books.vue` → `UButton` + `UIcon`
+- [x] `category-select.vue` → `USelectMenu`
+- [x] `upload-cover.vue` → `UButton`
+- [x] `cover-color-picker.vue` → `UButton`
+- [x] `create-book-modal.vue` → `UModal` + `UInput` + `UButton`
+
+#### Etapa 3.5.5 — Auth Pages ✅
+- [x] `login.vue` → `UAlert` + `UFormField` + `UInput` + `UButton` (loading prop)
+- [x] `register.vue` → `UAlert` + `UFormField` + `UInput` + `UButton` (loading prop)
+- [x] `forgot-password.vue` → `UAlert` + `UFormField` + `UInput` + `UButton` (loading prop)
+- [x] `reset-password.vue` → `UAlert` + `UFormField` + `UInput` + `UButton` (loading prop)
+- [x] `check-email.vue` → `UIcon` (i-lucide-mail)
+
+#### Etapa 3.5.6 — Discover Pages ✅
+- [x] `explore.vue` → `UInput` + `UBadge` + `USkeleton` + `UButton` + `UIcon`
+- [x] `my-session.vue` → `USkeleton` + `UButton`
+- [x] `library.vue` → token colors (text-highlight, text-muted)
+- [x] `favorites.vue` → token colors
+- [x] `categories.vue` → token colors
+- [x] `downloads.vue` → token colors
+- [x] `settings.vue` → token colors
+- [x] `index.vue` → `UButton` + `UModal` + `UIcon`
+
+#### Etapa 3.5.7 — Book Components ✅
+- [x] `discovery-cover.vue` → sem alterações (usa variante CSS inline)
+- [x] `discovery-card.vue` → `focus:ring-primary`
+- [x] `discovery-rating.vue` → sem alterações
+- [x] `book-details/panel.vue` → `USkeleton` + `UIcon` + `UBadge` + `UButton`
+- [x] `book-details/modal.vue` → `UButton` + token colors (bg-surface, border-default)
+
+#### Etapa 3.5.8 — Landing Components ✅
+- [x] `header.vue` → `UButton` com UIcon (menu/x toggle)
+- [x] `hero.vue` → `UButton` com icon (play)
+- [x] `books-showcase.vue` → `UBadge` + `UButton`
+
+#### Tokens de Cores Utilizados:
+```css
+@theme {
+  --color-sidebar: #34271C;
+  --color-accent: #C8A97D;
+  --color-book-bg: #FAF6F1;
+  --color-text-dark: #1F2937;
+  /* + primary/accent variants */
+}
+```
+Classes utilitárias: `text-highlight`, `text-muted`, `bg-surface`, `border-default`, `text-primary`, `text-error`, `text-success`, `text-warning`
+
+#### Arquivos modificados:
+```text
+app/
+├── assets/css/main.css                    ✅ Criado (TailwindCSS v4 @theme)
+├── nuxt.config.ts                         ✅ Atualizado (css path)
+├── components/
+│   ├── shared/ui/ (12 arquivos)           ✅ Reescritos
+│   ├── layout/ (5 arquivos)               ✅ Reescritos
+│   ├── dashboard/ (8 arquivos)            ✅ Reescritos
+│   ├── editor/ (4 arquivos)               ✅ Já Nuxt UI
+│   ├── book/ (3 arquivos)                 ✅ Atualizados
+│   ├── book-details/ (2 arquivos)         ✅ Reescritos
+│   └── landing/ (3 arquivos)              ✅ Reescritos
+├── pages/auth/ (5 páginas)                ✅ Reescritas
+├── pages/discover/ (8 páginas)            ✅ Reescritas
+└── layouts/ (3 layouts)                   ✅ Reescritos
+
+package.json                               ✅ Atualizado (sem @nuxtjs/tailwindcss)
+tailwind.config.ts                         ❌ Deletado
+```
+
+---
+
+### Fluxo de Salvamento Implementado:
+
+```
+Editor (digitação)
+    ↓
+useAutosave (detecta mudança no isDirty)
+    ↓
+Debounce (3 segundos)
+    ↓
+setSaveHandler (chamado)
+    ↓
+$fetch PUT /api/editor/chapter/[id]
+    ↓
+Supabase (atualiza chapters.content)
+    ↓
+Resposta OK → store.markSaved()
+    ↓
+save-status.vue (exibe "Salvo ✓")
+```
 
 ---
 
@@ -652,8 +787,9 @@ book-editor.vue
 | ------------ | --------------------------------------------------------------------------------------- | ------------ |
 | **Sprint 1** | Instalação, configuração do Nuxt UI Editor, estrutura de pastas, tipagens e editor base | ✅ Concluído |
 | **Sprint 2** | Toolbar, barra de status e integração completa com o editor                             | ✅ Concluído |
-| **Sprint 3** | Autosave, persistência e indicador de salvamento                                        | ⏳ Próximo   |
-| **Sprint 4** | Contador de palavras, caracteres e tempo estimado de leitura                            | ⬜ Pendente  |
+| **Sprint 3** | Autosave, persistência e indicador de salvamento                                        | ✅ Concluído |
+| **Sprint 3.5** | Migração completa para Nuxt UI (todos componentes, páginas, layouts)                   | ✅ Concluído |
+| **Sprint 4** | Contador de palavras, caracteres e tempo estimado de leitura                            | ⏳ Próximo   |
 | **Sprint 5** | Navegação e gerenciamento de capítulos                                                  | ⬜ Pendente  |
 | **Sprint 6** | Histórico de versões e restauração                                                      | ⬜ Pendente  |
 | **Sprint 7** | Modo foco e tela cheia                                                                  | ⬜ Pendente  |

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useEditorStore } from "~/stores/editor-store";
 import { useAutosave } from "~/composables/use-autosave";
+import type { BookDocument, Chapter, EditorContent } from "~/types/editor";
 
 definePageMeta({
   layout: "default",
@@ -9,7 +10,7 @@ definePageMeta({
 
 const route = useRoute();
 const store = useEditorStore();
-const { setSaveHandler } = useAutosave();
+const { setSaveHandler, saveNow } = useAutosave();
 
 const bookId = computed(() => route.params.id as string);
 
@@ -20,9 +21,46 @@ async function loadBook() {
   try {
     isLoading.value = true;
     error.value = null;
-    // TODO: Fetch book document from API
-    // const document = await fetchBookDocument(bookId.value);
-    // store.setDocument(document);
+
+    // Fetch book document from API
+    const bookData = await $fetch(`/api/books/${bookId.value}`);
+
+    // Fetch chapters for this book
+    const chaptersData = await $fetch("/api/editor/chapters", {
+      params: { documentId: bookId.value },
+    });
+
+    // Map chapters to our type
+    const chapters: Chapter[] = (chaptersData as any[]).map((ch) => ({
+      id: ch.id,
+      documentId: ch.document_id,
+      title: ch.title,
+      content: ch.content || { type: "doc", content: [{ type: "paragraph", content: [] }] },
+      order: ch.order,
+      createdAt: new Date(ch.created_at),
+      updatedAt: new Date(ch.updated_at),
+    }));
+
+    // Create document object
+    const document: BookDocument = {
+      id: bookId.value,
+      title: (bookData as any).title,
+      author: (bookData as any).author || "",
+      description: (bookData as any).description,
+      coverUrl: (bookData as any).cover_url,
+      category: (bookData as any).category,
+      chapters,
+      createdAt: new Date((bookData as any).created_at),
+      updatedAt: new Date(),
+      authorId: "",
+    };
+
+    store.setDocument(document);
+
+    // Load first chapter content if available
+    if (chapters.length > 0) {
+      store.setActiveChapter(chapters[0]);
+    }
   } catch (err) {
     error.value = err instanceof Error ? err.message : "Failed to load book";
   } finally {
@@ -33,9 +71,49 @@ async function loadBook() {
 onMounted(loadBook);
 
 // Configure autosave handler
-setSaveHandler(async (content) => {
-  // TODO: Implement API save
-  return { success: true, savedAt: new Date() };
+setSaveHandler(async (content: EditorContent) => {
+  const chapterId = store.chapterId;
+
+  if (!chapterId) {
+    return { success: false, error: "Nenhum capítulo selecionado" };
+  }
+
+  try {
+    await $fetch(`/api/editor/chapter/${chapterId}`, {
+      method: "PUT",
+      body: {
+        content,
+        wordCount: store.stats.words,
+      },
+    });
+
+    return { success: true, savedAt: new Date() };
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Erro ao salvar",
+    };
+  }
+});
+
+// Handle manual save with keyboard shortcut
+function handleKeydown(e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+    e.preventDefault();
+    saveNow();
+  }
+}
+
+onMounted(() => {
+  if (import.meta.client) {
+    window.addEventListener("keydown", handleKeydown);
+  }
+});
+
+onUnmounted(() => {
+  if (import.meta.client) {
+    window.removeEventListener("keydown", handleKeydown);
+  }
 });
 
 useHead({

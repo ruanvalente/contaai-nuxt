@@ -8,12 +8,13 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/ui",
   ],
+  css: ["~/assets/css/main.css"],
   ui: {
     theme: {
-      colorMode: true,
+      colorMode: false,
       colors: {
-        primary: "indigo",
-        neutral: "slate",
+        primary: 'primary',
+        neutral: 'slate',
       },
     },
   },
