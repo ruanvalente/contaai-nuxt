@@ -509,60 +509,61 @@ save-status.vue (exibe "Salvo ✓")
 
 ---
 
-# Fase 4 — Estatísticas
+# Fase 4 — Estatísticas ✅ CONCLUÍDA
 
 ## Objetivo
 
 Exibir informações em tempo real sobre o documento.
 
----
+### Status: ✅ Concluída em 2026-07-21
 
-### Etapa 4.1 — Contador de palavras
+#### Etapa 4.1 — Contador de palavras ✅
+- [x] `use-word-counter.ts` implementado com `wordCount`, `formattedWordCount`, `countWords`, `calculateWordCount`
+- [x] Formatação em português ("1 palavra" / "X palavras")
+- [x] Integração via `editor-store.ts` (`stats.words`)
 
-Criar
+#### Etapa 4.2 — Contador de caracteres ✅
+- [x] `use-character-counter.ts` implementado com `characterCount`, `characterCountNoSpaces`, `formattedCharacterCount`
+- [x] Método `countCharacters(text, includeSpaces)` flexível
+- [x] Cálculo automático via `calculateStats()` no `editor-utils.ts`
 
-`word-counter.vue`
+#### Etapa 4.3 — Tempo de leitura ✅
+- [x] `use-reading-time.ts` implementado com `readingTimeMinutes`, `speakingTimeMinutes`
+- [x] Base: 200 palavras/minuto (leitura), 150 palavras/minuto (fala)
+- [x] Formatação: "Menos de 1 min", "X min de leitura", "X min de fala"
 
-Com
+#### Etapa 4.4 — Atualização automática ✅
+- [x] `book-editor.vue` chama `calculateStats()` no `@update:model-value` e `@create`
+- [x] `store.setStats()` atualiza o Pinia store em tempo real
+- [x] `editor-status-bar.vue` reage via computed properties ao store
 
-`use-word-counter.ts`
+#### Melhorias adicionais na barra de status:
+- [x] Adicionado contador de páginas estimadas (250 palavras/página)
+- [x] Adicionado contador de frases
+- [x] Adicionado contador de parágrafos
+- [x] Adicionado tempo de fala estimado
+- [x] Adicionado caracteres sem espaços
+- [x] Separadores visuais (`|`) entre grupos de métricas
+- [x] Tooltips em todos os indicadores
+- [x] Layout responsivo: métricas extras ocultas em telas menores (`hidden sm:flex`, `hidden md:flex`, `hidden lg:flex`)
+- [x] Adicionados getters ao `editor-store.ts`: `pageCount`, `sentenceCount`, `paragraphCount`, `speakingTime`
 
----
-
-### Etapa 4.2 — Contador de caracteres
-
-Criar
-
-`character-counter.vue`
-
-Com
-
-`use-character-counter.ts`
-
----
-
-### Etapa 4.3 — Tempo de leitura
-
-Criar
-
-`reading-time.vue`
-
-Com
-
-`use-reading-time.ts`
-
-Base:
-
-- 200 palavras/minuto.
-
----
-
-### Etapa 4.4 — Atualização automática
-
-Sempre que o editor sofrer alteração:
-
-- recalcular métricas;
-- atualizar barra inferior.
+#### Arquivos modificados:
+```text
+app/
+├── components/
+│   └── editor/
+│       └── editor-status-bar.vue  ✅ Reescrito (8 métricas + responsivo)
+├── composables/
+│   ├── use-word-counter.ts        ✅ (sem alterações)
+│   ├── use-character-counter.ts   ✅ (sem alterações)
+│   └── use-reading-time.ts        ✅ (sem alterações)
+├── stores/
+│   └── editor-store.ts            ✅ Atualizado (4 novos getters)
+└── utils/
+    └── editor/
+        └── editor-utils.ts        ✅ (sem alterações — calculateStats já computava tudo)
+```
 
 ---
 
@@ -829,8 +830,8 @@ book-editor.vue
 | **Sprint 3** | Autosave, persistência e indicador de salvamento                                        | ✅ Concluído |
 | **Sprint 3.5** | Migração completa para Nuxt UI (todos componentes, páginas, layouts)                   | ✅ Concluído |
 | **Sprint 3.6** | Code review: fix corrupção dados rename, rollback erros, ownership docs vazios, reorder paralelo | ✅ Concluído |
-| **Sprint 4** | Contador de palavras, caracteres e tempo estimado de leitura                            | ⏳ Próximo   |
-| **Sprint 5** | Navegação e gerenciamento de capítulos                                                  | ⬜ Pendente  |
+| **Sprint 4** | Contador de palavras, caracteres e tempo estimado de leitura                            | ✅ Concluído |
+| **Sprint 5** | Navegação e gerenciamento de capítulos                                                  | ⏳ Próximo   |
 | **Sprint 6** | Histórico de versões e restauração                                                      | ⬜ Pendente  |
 | **Sprint 7** | Modo foco e tela cheia                                                                  | ⬜ Pendente  |
 | **Sprint 8** | Exportação para Markdown e PDF, refinamentos finais e testes de integração              | ⬜ Pendente  |

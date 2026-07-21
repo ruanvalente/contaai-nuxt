@@ -64,6 +64,22 @@ export const useEditorStore = defineStore("editor", {
     readingTime: (state): number => {
       return state.stats.readingTimeMinutes;
     },
+
+    pageCount: (state): number => {
+      return state.stats.pages;
+    },
+
+    sentenceCount: (state): number => {
+      return state.stats.sentences;
+    },
+
+    paragraphCount: (state): number => {
+      return state.stats.paragraphs;
+    },
+
+    speakingTime: (state): number => {
+      return state.stats.speakingTimeMinutes;
+    },
   },
 
   actions: {
