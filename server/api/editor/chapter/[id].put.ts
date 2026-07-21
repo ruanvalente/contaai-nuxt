@@ -15,10 +15,6 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event)
 
-  if (!body.content) {
-    throw createError({ statusCode: 400, message: "Conteúdo é obrigatório" })
-  }
-
   const supabase = await serverSupabaseClient(event)
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -27,41 +23,42 @@ export default defineEventHandler(async (event) => {
   }
 
   // Get chapter with document info
-  const { data: chapter, error: fetchError } = await supabase
-    .from("chapters")
-    .select("id, document_id")
+  const chapter = await (supabase.from("chapters") as any)
+    .select("id, document_id, user_id")
     .eq("id", id)
     .single()
 
-  if (fetchError || !chapter) {
+  if (chapter.error || !chapter.data) {
     throw createError({ statusCode: 404, message: "Capítulo não encontrado" })
   }
 
-  // Verify ownership via document
-  const { data: document } = await supabase
-    .from("user_books")
-    .select("user_id")
-    .eq("id", chapter.document_id)
-    .single()
-
-  if (!document || document.user_id !== user.id) {
+  if (chapter.data.user_id !== user.id) {
     throw createError({ statusCode: 403, message: "Sem permissão para editar este capítulo" })
   }
 
-  const { data, error } = await supabase
-    .from("chapters")
-    .update({
-      content: body.content,
-      word_count: body.wordCount || 0,
-      updated_at: new Date().toISOString(),
-    })
+  const updatePayload: Record<string, any> = {
+    updated_at: new Date().toISOString(),
+  }
+
+  if (body.content !== undefined) {
+    updatePayload.content = body.content
+  }
+  if (body.title !== undefined) {
+    updatePayload.title = body.title
+  }
+  if (body.wordCount !== undefined) {
+    updatePayload.word_count = body.wordCount
+  }
+
+  const result = await (supabase.from("chapters") as any)
+    .update(updatePayload)
     .eq("id", id)
     .select()
     .single()
 
-  if (error) {
-    throw createError({ statusCode: 500, message: error.message })
+  if (result.error) {
+    throw createError({ statusCode: 500, message: result.error.message })
   }
 
-  return { success: true, chapter: data }
+  return { success: true, chapter: result.data }
 })

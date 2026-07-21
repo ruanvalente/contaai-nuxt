@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { EditorToolbarItem } from "@nuxt/ui";
-import type { Editor } from "@tiptap/vue-3";
 import { useEditorStore } from "~/stores/editor-store";
 import { useFocusMode } from "~/composables/use-focus-mode";
 import { useFullscreen } from "~/composables/use-fullscreen";
@@ -315,13 +314,14 @@ function handleUpdate(value: string | object) {
   emit("update:stats", stats);
 }
 
-function handleSelectionUpdate(editor: Editor) {
-  const cursor = getCursorPosition(editor);
+function handleSelectionUpdate(props: any) {
+  const cursor = getCursorPosition(props.editor);
   store.setCursorPosition(cursor);
   emit("update:cursor", { line: cursor.line, column: cursor.column, offset: cursor.offset });
 }
 
-function handleCreate({ editor }: { editor: Editor }) {
+function handleCreate(props: any) {
+  const editor = props.editor;
   store.setLoading(false);
 
   const stats = calculateStats(editor.getJSON() as EditorContent);

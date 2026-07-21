@@ -448,6 +448,45 @@ tailwind.config.ts                         ❌ Deletado
 
 ---
 
+# Fase 3.6 — Correções e Otimizações do Code Review ✅ CONCLUÍDA
+
+## Objetivo
+
+Corrigir bugs críticos, adicionar tratamento de erros e otimizar performance identificados durante revisão de código.
+
+### Status: ✅ Concluída em 2026-07-21
+
+#### Etapa 3.6.1 — Bug de corrupção de dados ao renomear capítulo ✅
+- [x] **Bug crítico**: `saveEdit` em `chapter-list.vue` enviava `store.content` (conteúdo do capítulo ativo) ao renomear um capítulo diferente, podendo sobrescrever o conteúdo de outro capítulo no servidor
+- [x] **Client**: `saveEdit` agora envia apenas `{ title }` em vez de `{ content, title, wordCount }`
+- [x] **Server**: Endpoint `PUT /chapter/[id]` agora aceita `content` como opcional — apenas campos presentes no request são atualizados
+- [x] Variável `updated` não utilizada (dead code) removida do `[id].put.ts`
+
+#### Etapa 3.6.2 — Tratamento de erros com rollback ✅
+- [x] `deleteChapter`: salva estado anterior (`previousChapters`, `previousActive`) antes de update otimista; reverte em caso de falha na API
+- [x] `onDrop`: salva `previousChapters` antes de reordenar; reverte em caso de falha no `$fetch`
+- [x] UI permanece consistente com o servidor mesmo quando requests falham
+
+#### Etapa 3.6.3 — Verificação de ownership para documentos vazios ✅
+- [x] **Bug**: `GET /chapters` e `PUT /reorder` retornavam 403 para documentos sem capítulos (verificação via tabela `chapters` retornava vazio)
+- [x] Adicionado fallback para tabela `user_books` quando `chapters` está vazio
+- [x] Mesma correção aplicada em `reorder.put.ts`
+- [x] Padronizado com pattern já existente em `chapter/index.post.ts`
+
+#### Etapa 3.6.4 — Otimização de performance no reorder ✅
+- [x] Updates sequenciais (`for` loop com `await`) substituídos por `Promise.all` para execução concorrente
+- [x] Redução de latência para documentos com muitos capítulos
+
+#### Arquivos modificados:
+```text
+app/components/editor/chapter-list.vue      ✅ saveEdit (só title), rollback em delete/reorder
+server/api/editor/chapter/[id].put.ts       ✅ content opcional, dead code removido
+server/api/editor/chapters/index.get.ts     ✅ fallback user_books para docs vazios
+server/api/editor/chapters/reorder.put.ts   ✅ Promise.all + fallback user_books
+```
+
+---
+
 ### Fluxo de Salvamento Implementado:
 
 ```
@@ -789,6 +828,7 @@ book-editor.vue
 | **Sprint 2** | Toolbar, barra de status e integração completa com o editor                             | ✅ Concluído |
 | **Sprint 3** | Autosave, persistência e indicador de salvamento                                        | ✅ Concluído |
 | **Sprint 3.5** | Migração completa para Nuxt UI (todos componentes, páginas, layouts)                   | ✅ Concluído |
+| **Sprint 3.6** | Code review: fix corrupção dados rename, rollback erros, ownership docs vazios, reorder paralelo | ✅ Concluído |
 | **Sprint 4** | Contador de palavras, caracteres e tempo estimado de leitura                            | ⏳ Próximo   |
 | **Sprint 5** | Navegação e gerenciamento de capítulos                                                  | ⬜ Pendente  |
 | **Sprint 6** | Histórico de versões e restauração                                                      | ⬜ Pendente  |

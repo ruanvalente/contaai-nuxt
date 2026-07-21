@@ -33,7 +33,7 @@ function handleBookCreated() {
 }
 
 function handleEditBook(id: string) {
-  navigateTo(`/books/${id}/edit`);
+  navigateTo(`/discover/books/${id}/editor`);
 }
 
 function handleDeleteBook(id: string) {

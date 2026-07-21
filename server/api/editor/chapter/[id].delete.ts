@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const chapter = await (supabase.from("chapters") as any)
-    .select("id, document_id, user_id, title, content, \"order\", word_count, created_at, updated_at")
+    .select("id, document_id, user_id")
     .eq("id", id)
     .single()
 
@@ -30,8 +30,16 @@ export default defineEventHandler(async (event) => {
   }
 
   if (chapter.data.user_id !== user.id) {
-    throw createError({ statusCode: 403, message: "Sem permissão para acessar este capítulo" })
+    throw createError({ statusCode: 403, message: "Sem permissão para excluir este capítulo" })
   }
 
-  return chapter.data
+  const result = await (supabase.from("chapters") as any)
+    .delete()
+    .eq("id", id)
+
+  if (result.error) {
+    throw createError({ statusCode: 500, message: result.error.message })
+  }
+
+  return { success: true }
 })
