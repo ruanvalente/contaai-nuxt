@@ -156,6 +156,7 @@ export interface Version {
   documentId: string;
   content: EditorContent;
   label?: string;
+  wordCount?: number;
   authorId: string;
   authorName: string;
   createdAt: Date;

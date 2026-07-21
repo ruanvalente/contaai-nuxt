@@ -16,6 +16,7 @@ const bookId = computed(() => route.params.id as string);
 
 const isLoading = ref(true);
 const error = ref<string | null>(null);
+const showVersionHistory = ref(false);
 
 const chapterOptions = computed(() =>
   (store.document?.chapters ?? []).map((ch) => ({
@@ -193,19 +194,54 @@ useHead({
 
       <!-- Editor Area -->
       <div class="flex-1 flex flex-col min-w-0">
-        <!-- Mobile chapter selector -->
-        <div class="md:hidden px-4 py-2 border-b border-default">
+        <!-- Mobile chapter selector + version history toggle -->
+        <div class="md:hidden flex items-center gap-2 px-4 py-2 border-b border-default">
           <USelect
             :items="chapterOptions"
             :model-value="selectedChapterId ?? undefined"
-            class="w-full"
+            class="flex-1"
             @update:model-value="(id: any) => selectedChapterId = id"
+          />
+          <UButton
+            icon="i-lucide-history"
+            size="sm"
+            color="neutral"
+            variant="ghost"
+            @click="showVersionHistory = !showVersionHistory"
+          />
+        </div>
+
+        <!-- Desktop: version history toggle in top bar -->
+        <div class="hidden md:flex items-center justify-end px-4 py-1.5 border-b border-default">
+          <UButton
+            icon="i-lucide-history"
+            size="xs"
+            color="neutral"
+            :variant="showVersionHistory ? 'soft' : 'ghost'"
+            label="Histórico"
+            @click="showVersionHistory = !showVersionHistory"
           />
         </div>
 
         <EditorBookEditor
           placeholder="Comece a escrever seu livro..."
         />
+      </div>
+
+      <!-- Version History Panel -->
+      <div
+        v-if="showVersionHistory"
+        class="w-80 border-l border-default shrink-0 overflow-hidden hidden md:block"
+      >
+        <EditorVersionHistory @close="showVersionHistory = false" />
+      </div>
+
+      <!-- Mobile Version History Overlay -->
+      <div
+        v-if="showVersionHistory"
+        class="md:hidden fixed inset-0 z-50 bg-background"
+      >
+        <EditorVersionHistory @close="showVersionHistory = false" />
       </div>
     </div>
   </div>
