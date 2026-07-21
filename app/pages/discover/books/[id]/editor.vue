@@ -17,6 +17,21 @@ const bookId = computed(() => route.params.id as string);
 const isLoading = ref(true);
 const error = ref<string | null>(null);
 
+const chapterOptions = computed(() =>
+  (store.document?.chapters ?? []).map((ch) => ({
+    label: ch.title,
+    value: ch.id,
+  }))
+);
+
+const selectedChapterId = computed({
+  get: () => store.activeChapter?.id ?? null,
+  set: (id: string | null) => {
+    const chapter = (store.document?.chapters ?? []).find((ch) => ch.id === id)
+    if (chapter) store.setActiveChapter(chapter)
+  },
+})
+
 async function loadBook() {
   try {
     isLoading.value = true;
@@ -57,8 +72,7 @@ async function loadBook() {
 
     store.setDocument(document);
 
-    // Load first chapter content if available
-    if (chapters.length > 0) {
+    if (chapters.length > 0 && chapters[0]) {
       store.setActiveChapter(chapters[0]);
     }
   } catch (err) {
@@ -160,9 +174,28 @@ useHead({
     </div>
 
     <!-- Editor Content -->
-    <EditorBookEditor
-      v-else
-      placeholder="Comece a escrever seu livro..."
-    />
+    <div v-else class="flex h-[calc(100vh-4rem)]">
+      <!-- Chapter Sidebar -->
+      <div class="w-72 border-r border-default shrink-0 overflow-hidden hidden md:block">
+        <EditorChapterList />
+      </div>
+
+      <!-- Editor Area -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Mobile chapter selector -->
+        <div class="md:hidden px-4 py-2 border-b border-default">
+          <USelect
+            :items="chapterOptions"
+            :model-value="selectedChapterId ?? undefined"
+            class="w-full"
+            @update:model-value="(id: any) => selectedChapterId = id"
+          />
+        </div>
+
+        <EditorBookEditor
+          placeholder="Comece a escrever seu livro..."
+        />
+      </div>
+    </div>
   </div>
 </template>

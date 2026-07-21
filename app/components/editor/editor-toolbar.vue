@@ -46,7 +46,7 @@ const { toggleFullscreen, fullscreenIcon, fullscreenLabel } = useFullscreen();
         variant="ghost"
         color="neutral"
         size="sm"
-        @click="toggleFullscreen"
+        @click="() => toggleFullscreen()"
       />
     </div>
   </div>

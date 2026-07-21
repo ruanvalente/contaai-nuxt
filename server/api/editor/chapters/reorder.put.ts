@@ -1,17 +1,15 @@
 import { serverSupabaseClient } from "#supabase/server"
 
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
-  const documentId = query.documentId as string
+  const body = await readBody(event)
+  const { chapterIds, documentId } = body
+
+  if (!chapterIds || !Array.isArray(chapterIds) || chapterIds.length === 0) {
+    throw createError({ statusCode: 400, message: "chapterIds é obrigatório" })
+  }
 
   if (!documentId) {
     throw createError({ statusCode: 400, message: "documentId é obrigatório" })
-  }
-
-  if (!UUID_REGEX.test(documentId)) {
-    throw createError({ statusCode: 400, message: "documentId inválido" })
   }
 
   const supabase = await serverSupabaseClient(event)
@@ -21,7 +19,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: "Não autenticado" })
   }
 
-  // Verify document ownership via chapters table, fallback to user_books for empty documents
+  // Verify ownership via chapters table, fallback to user_books for empty documents
   const chapterCheck = await (supabase.from("chapters") as any)
     .select("user_id")
     .eq("document_id", documentId)
@@ -40,17 +38,22 @@ export default defineEventHandler(async (event) => {
     ownerId = bookCheck.data?.user_id
   }
   if (!ownerId || ownerId !== user.id) {
-    throw createError({ statusCode: 403, message: "Sem permissão para acessar este documento" })
+    throw createError({ statusCode: 403, message: "Sem permissão para reordenar capítulos" })
   }
 
-  const chapters = await (supabase.from("chapters") as any)
-    .select("id, document_id, title, \"order\", word_count, created_at, updated_at")
-    .eq("document_id", documentId)
-    .order("order", { ascending: true })
+  // Update each chapter's order in parallel
+  const updates = chapterIds.map((id: string, index: number) =>
+    (supabase.from("chapters") as any)
+      .update({ order: index })
+      .eq("id", id)
+      .eq("document_id", documentId)
+  )
 
-  if (chapters.error) {
-    throw createError({ statusCode: 500, message: chapters.error.message })
+  const results = await Promise.all(updates)
+  const error = results.find((r) => r.error)
+  if (error) {
+    throw createError({ statusCode: 500, message: error.error.message })
   }
 
-  return chapters.data || []
+  return { success: true }
 })
