@@ -8,13 +8,32 @@ const chapters = computed(() => store.document?.chapters ?? [])
 const activeChapterId = computed(() => store.activeChapter?.id)
 
 const isCreating = ref(false)
+const isLoadingChapter = ref(false)
 const editingChapterId = ref<string | null>(null)
 const editTitle = ref("")
 const draggingIndex = ref<number | null>(null)
 const dragOverIndex = ref<number | null>(null)
 
-function selectChapter(chapter: Chapter) {
-  store.setActiveChapter(chapter)
+async function selectChapter(chapter: Chapter) {
+  if (isLoadingChapter.value) return
+  if (store.activeChapter?.id === chapter.id) return
+
+  // If chapter has no real content (empty doc), fetch it from the API
+  const isEmpty =
+    !chapter.content ||
+    (chapter.content.content?.length === 1 &&
+      chapter.content.content[0]?.type === "paragraph" &&
+      !(chapter.content.content[0] as any).content?.length)
+  if (isEmpty) {
+    isLoadingChapter.value = true
+    try {
+      await store.loadChapterContent(chapter.id)
+    } finally {
+      isLoadingChapter.value = false
+    }
+  } else {
+    store.setActiveChapter(chapter)
+  }
 }
 
 function remapChapter(data: any): Chapter {
@@ -213,7 +232,10 @@ function cancelEdit() {
               </div>
               <div v-else class="flex items-center gap-2">
                 <span class="text-sm truncate">{{ chapter.title }}</span>
-                <span class="text-xs text-muted-foreground">{{ (chapter as any).word_count || 0 }} palavras</span>
+                <span v-if="isLoadingChapter && activeChapterId === chapter.id" class="text-xs text-muted-foreground">
+                  <UIcon name="i-lucide-loader-2" class="animate-spin h-3 w-3" />
+                </span>
+                <span v-else class="text-xs text-muted-foreground">{{ (chapter as any).word_count || 0 }} palavras</span>
               </div>
             </div>
 

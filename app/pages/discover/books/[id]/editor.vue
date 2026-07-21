@@ -26,9 +26,20 @@ const chapterOptions = computed(() =>
 
 const selectedChapterId = computed({
   get: () => store.activeChapter?.id ?? null,
-  set: (id: string | null) => {
+  set: async (id: string | null) => {
+    if (!id) return
     const chapter = (store.document?.chapters ?? []).find((ch) => ch.id === id)
-    if (chapter) store.setActiveChapter(chapter)
+    if (!chapter) return
+    const isEmpty =
+      !chapter.content ||
+      (chapter.content.content?.length === 1 &&
+        chapter.content.content[0]?.type === "paragraph" &&
+        !(chapter.content.content[0] as any).content?.length)
+    if (isEmpty) {
+      await store.loadChapterContent(chapter.id)
+    } else {
+      store.setActiveChapter(chapter)
+    }
   },
 })
 
@@ -73,7 +84,7 @@ async function loadBook() {
     store.setDocument(document);
 
     if (chapters.length > 0 && chapters[0]) {
-      store.setActiveChapter(chapters[0]);
+      await store.loadChapterContent(chapters[0].id);
     }
   } catch (err) {
     error.value = err instanceof Error ? err.message : "Failed to load book";

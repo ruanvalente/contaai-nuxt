@@ -113,6 +113,48 @@ export const useEditorStore = defineStore("editor", {
       this.isDirty = false;
     },
 
+    async loadChapterContent(chapterId: string): Promise<boolean> {
+      try {
+        this.isLoading = true;
+        this.error = null;
+
+        const data = await $fetch<any>(`/api/editor/chapter/${chapterId}`);
+        const mapped: Chapter = {
+          id: data.id,
+          documentId: data.document_id,
+          title: data.title,
+          content: data.content || EMPTY_EDITOR_CONTENT,
+          order: data.order,
+          createdAt: new Date(data.created_at),
+          updatedAt: new Date(data.updated_at),
+        };
+
+        // Update chapter in document chapters array
+        if (this.document) {
+          const index = this.document.chapters.findIndex((ch) => ch.id === chapterId);
+          if (index !== -1) {
+            this.document.chapters[index] = mapped;
+          }
+        }
+
+        // Set as active chapter
+        this.activeChapter = mapped;
+        this.content = mapped.content;
+        this.isDirty = false;
+
+        // Recalculate stats for the new chapter content
+        const { calculateStats } = await import("~/utils/editor/editor-utils");
+        this.stats = calculateStats(mapped.content);
+
+        return true;
+      } catch (err) {
+        this.error = err instanceof Error ? err.message : "Erro ao carregar capítulo";
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
     // -------------------------------------------------------------------------
     // Content Actions
     // -------------------------------------------------------------------------
