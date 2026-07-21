@@ -699,44 +699,122 @@ app/
 
 ---
 
-# Fase 6 — Histórico de versões
+# Fase 6 — Histórico de versões ✅ CONCLUÍDA
 
 ## Objetivo
 
 Permitir restaurar versões anteriores.
 
+### Status: ✅ Concluída em 2026-07-21
+
+#### Etapa 6.1 — Criar `use-version-history.ts` ✅
+
+- [x] Reescrito com chamadas API reais (GET/POST/restore)
+- [x] `loadVersions(chapterId)` — carrega versões do servidor
+- [x] `saveVersion(chapterId, label?)` — salva snapshot do conteúdo atual
+- [x] `restoreVersion(versionId)` — restaura conteúdo e recalcula stats
+- [x] `selectVersion(versionId)` — seleção para comparação (toggle A/B)
+- [x] `compareVersions()` — retorna diff com `computeDiff()`
+- [x] `clearSelection()` — limpa seleção
+- [x] Computed: `sortedVersions`, `canCompare`, `canRestore`, `selectedVersionA`, `selectedVersionB`
+- [x] Helpers: `formatDate()`, `formatRelativeTime()`, `getTextPreview()`
+
+#### Etapa 6.2 — Criar `version-history.vue` ✅
+
+- [x] Sidebar com lista de versões ordenadas por data (mais recente primeiro)
+- [x] Header com título "Histórico" e botão fechar
+- [x] Botão "Salvar versão" com input de rótulo opcional
+- [x] Cada versão exibe: rótulo/data, autor, word count, preview do conteúdo
+- [x] Seleção visual de versão A/B com badges
+- [x] Ações: Comparar (diff), Restaurar, Limpar seleção
+- [x] Confirmação antes de restaurar ("O conteúdo atual será substituído")
+- [x] Estado vazio amigável ("Nenhuma versão salva ainda")
+- [x] Loading spinner ao carregar
+- [x] Exibição de erros via UAlert
+
+#### Etapa 6.3 — Comparação ✅
+
+- [x] `diff-utils.ts` — Algoritmo de diff baseado em LCS (Longest Common Subsequence)
+- [x] Extração de palavras do ProseMirror JSON com contexto de bloco
+- [x] Classificação em added/removed/unchanged
+- [x] Visualização inline: texto removido (vermelho + line-through), adicionado (verde + bold), inalterado (muted)
+- [x] Preview de comparação mostrando versões A → B
+
+#### Etapa 6.4 — Restaurar ✅
+
+- [x] API `POST /api/editor/version/[id]/restore` — atualiza conteúdo do capítulo
+- [x] Cálculo automático de word_count ao restaurar
+- [x] Atualização do Pinia store com conteúdo restaurado
+- [x] Recálculo de estatísticas após restauração
+
+#### Migration criada:
+
+```sql
+-- 045_create_chapter_versions.sql
+CREATE TABLE chapter_versions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  chapter_id UUID REFERENCES chapters(id) ON DELETE CASCADE,
+  document_id UUID REFERENCES user_books(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  content JSONB NOT NULL,
+  label TEXT,
+  word_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+#### APIs criadas:
+
+```text
+server/api/editor/
+├── chapter/
+│   └── [id]/
+│       └── versions/
+│           ├── index.get.ts    ✅ (listar versões do capítulo)
+│           └── index.post.ts   ✅ (criar nova versão)
+└── version/
+    └── [id]/
+        └── restore.post.ts     ✅ (restaurar versão)
+```
+
+#### Arquivos criados/modificados:
+
+```text
+app/
+├── components/
+│   └── editor/
+│       └── version-history.vue  ✅ Criado (sidebar de histórico)
+├── composables/
+│   └── use-version-history.ts   ✅ Reescrito (API reais)
+├── types/
+│   └── editor.ts                ✅ Atualizado (wordCount em Version)
+└── utils/
+    └── editor/
+        └── diff-utils.ts        ✅ Criado (algoritmo LCS)
+└── pages/
+    └── discover/
+        └── books/
+            └── [id]/
+                └── editor.vue   ✅ Atualizado (painel de histórico)
+
+server/
+└── api/
+    └── editor/
+        ├── chapter/[id]/versions/  ✅ Criado (GET + POST)
+        └── version/[id]/restore.post.ts  ✅ Criado
+
+supabase/
+└── migrations/
+    └── 045_create_chapter_versions.sql  ✅ Criado
+```
+
 ---
 
-### Etapa 6.1 — Criar
+### Limites implementados:
 
-`use-version-history.ts`
-
----
-
-### Etapa 6.2 — Criar
-
-`version-history.vue`
-
-Mostrar:
-
-- data;
-- hora;
-- versão;
-- usuário.
-
----
-
-### Etapa 6.3 — Comparação
-
-Selecionar duas versões.
-
-Visualizar diferenças.
-
----
-
-### Etapa 6.4 — Restaurar
-
-Permitir restaurar qualquer versão.
+- Máximo de 50 versões por capítulo (exclui automaticamente as mais antigas)
+- Versões são imutáveis (sem trigger de updated_at)
+- RLS: usuários só veem/gerenciam suas próprias versões
 
 ---
 
@@ -916,8 +994,8 @@ book-editor.vue
 | **Sprint 3.6** | Code review: fix corrupção dados rename, rollback erros, ownership docs vazios, reorder paralelo | ✅ Concluído |
 | **Sprint 4**   | Contador de palavras, caracteres e tempo estimado de leitura                                     | ✅ Concluído |
 | **Sprint 5**   | Navegação e gerenciamento de capítulos                                                           | ✅ Concluído |
-| **Sprint 6**   | Histórico de versões e restauração                                                               | ⏳ Próximo   |
-| **Sprint 7**   | Modo foco e tela cheia                                                                           | ⬜ Pendente  |
+| **Sprint 6**   | Histórico de versões e restauração                                                               | ✅ Concluído |
+| **Sprint 7**   | Modo foco e tela cheia                                                                           | ⏳ Próximo   |
 | **Sprint 8**   | Exportação para Markdown e PDF, refinamentos finais e testes de integração                       | ⬜ Pendente  |
 
 Esse plano estabelece uma progressão clara: primeiro a infraestrutura, depois a experiência de escrita, seguida pelos recursos de produtividade e, por fim, as funcionalidades avançadas de gerenciamento e exportação. Isso reduz o risco de retrabalho e facilita validar cada etapa antes de avançar para a próxima.

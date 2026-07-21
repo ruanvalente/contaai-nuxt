@@ -51,6 +51,16 @@ watch(
   }
 );
 
+// Sync store.content → internal (handles chapter switch & version restore)
+let isInternalUpdate = false;
+watch(
+  () => store.content,
+  (newVal) => {
+    if (isInternalUpdate) return;
+    internalContent.value = newVal;
+  }
+);
+
 // ---------------------------------------------------------------------------
 // Toolbar Items (fixed toolbar)
 // ---------------------------------------------------------------------------
@@ -305,8 +315,10 @@ function handleUpdate(value: string | object) {
     content = value as EditorContent;
   }
 
+  isInternalUpdate = true;
   internalContent.value = content;
   store.updateContent(content);
+  nextTick(() => { isInternalUpdate = false; });
 
   const stats = calculateStats(content);
   store.setStats(stats);
