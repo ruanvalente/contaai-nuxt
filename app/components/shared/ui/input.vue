@@ -16,28 +16,18 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
-
-function onInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  emit('update:modelValue', target.value)
-}
 </script>
 
 <template>
-  <div>
-    <label
-      :for="id"
-      class="mb-2 block text-sm font-medium text-[#1F2937]"
-    >
-      {{ label }}
-    </label>
-    <input
+  <UFormField :label="label" :for="id">
+    <UInput
       :id="id"
       :type="type"
-      :value="modelValue"
+      :model-value="modelValue"
       :placeholder="placeholder"
-      @input="onInput"
-      class="w-full h-14 rounded-2xl border border-gray-200 bg-white px-5 text-base text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9A87C]/20 focus:border-[#C9A87C]/30 transition-colors"
+      size="xl"
+      :ui="{ base: 'rounded-2xl' }"
+      @update:model-value="emit('update:modelValue', $event)"
     />
-  </div>
+  </UFormField>
 </template>

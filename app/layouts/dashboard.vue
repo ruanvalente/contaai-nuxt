@@ -31,9 +31,9 @@ function closeSidebar() {
 </script>
 
 <template>
-  <div v-if="!isInitialized" class="min-h-screen bg-primary-100" />
+  <div v-if="!isInitialized" class="min-h-screen" />
 
-  <div v-else class="min-h-screen bg-primary-100">
+  <div v-else class="min-h-screen">
     <DashboardHeader :user="user" :logging-out="loggingOut" @toggle-sidebar="toggleSidebar" @logout="handleLogout" />
 
     <DashboardSidebar
@@ -43,9 +43,9 @@ function closeSidebar() {
     />
 
     <main class="lg:ml-64 pt-16 min-h-screen">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <UContainer>
         <slot />
-      </div>
+      </UContainer>
     </main>
 
     <SharedUiToast />

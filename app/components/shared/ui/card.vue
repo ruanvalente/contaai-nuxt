@@ -1,7 +1,11 @@
 <template>
-  <div
-    class="w-full max-w-[450px] rounded-[28px] border border-gray-100 bg-white p-12 shadow-sm"
+  <UCard
+    :ui="{
+      base: 'w-full max-w-[450px]',
+      rounded: 'rounded-[28px]',
+      body: 'p-12',
+    }"
   >
     <slot />
-  </div>
+  </UCard>
 </template>

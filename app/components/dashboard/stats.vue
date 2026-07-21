@@ -5,7 +5,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
 <template>
   <div class="space-y-6">
     <div>
-      <h3 class="text-sm font-medium text-gray-500 mb-3">Suas Estatísticas</h3>
+      <h3 class="text-sm font-medium text-muted mb-3">Suas Estatísticas</h3>
       <div v-if="isLoading" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div
           v-for="i in 4"
@@ -42,7 +42,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-green-500"
+            class="h-6 w-6 text-success"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -61,7 +61,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-yellow-500"
+            class="h-6 w-6 text-warning"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -80,7 +80,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-blue-500"
+            class="h-6 w-6 text-info"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -102,7 +102,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
     </div>
 
     <div>
-      <h3 class="text-sm font-medium text-gray-500 mb-3">Plataforma</h3>
+      <h3 class="text-sm font-medium text-muted mb-3">Plataforma</h3>
       <div v-if="isLoading" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div
           v-for="i in 4"
@@ -139,7 +139,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-green-500"
+            class="h-6 w-6 text-success"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -158,7 +158,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-yellow-500"
+            class="h-6 w-6 text-warning"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -182,7 +182,7 @@ const { userMetrics, platformMetrics, isLoading } = useDashboard();
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-blue-500"
+            class="h-6 w-6 text-info"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

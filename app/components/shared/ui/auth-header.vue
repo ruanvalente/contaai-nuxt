@@ -9,10 +9,10 @@ defineProps<Props>()
 
 <template>
   <div class="mb-10 text-center">
-    <h1 class="mb-3 font-serif text-4xl font-semibold text-[#1F2937]">
+    <h1 class="mb-3 font-serif text-4xl font-semibold text-highlight">
       {{ title }}
     </h1>
-    <p class="text-lg text-[#6B7280]">
+    <p class="text-lg text-muted">
       {{ subtitle }}
     </p>
   </div>

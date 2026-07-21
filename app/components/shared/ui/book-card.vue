@@ -25,17 +25,17 @@ defineProps<Props>()
           {{ title }}
         </span>
       </div>
-      <div v-if="isFeatured" class="absolute top-2 left-2 bg-accent-500 text-white text-[10px] px-2 py-0.5 rounded-full font-medium">
+      <div v-if="isFeatured" class="absolute top-2 left-2 bg-accent text-white text-[10px] px-2 py-0.5 rounded-full font-medium">
         Destaque
       </div>
     </div>
-    <h3 class="mt-2 text-sm font-semibold text-gray-900 line-clamp-1">
+    <h3 class="mt-2 text-sm font-semibold text-highlight line-clamp-1">
       {{ title }}
     </h3>
-    <p class="text-xs text-gray-500">{{ author }}</p>
+    <p class="text-xs text-muted">{{ author }}</p>
     <div v-if="rating" class="flex items-center gap-1 mt-1">
-      <span class="text-yellow-500 text-xs">★</span>
-      <span class="text-xs text-gray-600">{{ rating.toFixed(1) }}</span>
+      <span class="text-warning text-xs">★</span>
+      <span class="text-xs text-muted">{{ rating.toFixed(1) }}</span>
     </div>
   </div>
 </template>

@@ -9,14 +9,11 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <span
-    :class="[
-      'inline-flex items-center rounded-full font-medium',
-      variant === 'primary'
-        ? 'bg-accent-100 text-accent-700'
-        : 'bg-gray-100 text-gray-700',
-    ]"
+  <UBadge
+    :color="variant === 'primary' ? 'primary' : 'neutral'"
+    :variant="variant === 'primary' ? 'subtle' : 'outline'"
+    size="sm"
   >
     <slot />
-  </span>
+  </UBadge>
 </template>

@@ -13,8 +13,8 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div
-    :class="['animate-pulse bg-gray-200 rounded', className]"
+  <USkeleton
+    :class="className"
     :style="{ width, height }"
   />
 </template>

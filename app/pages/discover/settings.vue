@@ -6,8 +6,8 @@ definePageMeta({
 
 <template>
   <div>
-    <h1 class="text-2xl font-bold text-gray-900 mb-2">Configurações</h1>
-    <p class="text-gray-600">
+    <h1 class="text-2xl font-bold text-highlight mb-2">Configurações</h1>
+    <p class="text-muted">
       Esta funcionalidade será implementada em breve.
     </p>
   </div>

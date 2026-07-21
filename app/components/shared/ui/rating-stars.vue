@@ -22,15 +22,15 @@ withDefaults(defineProps<Props>(), {
       :key="i"
       :class="[
         size === 'sm' ? 'text-xs' : 'text-sm',
-        i <= Math.round(rating) ? 'text-yellow-500' : 'text-gray-300'
+        i <= Math.round(rating) ? 'text-warning' : 'text-muted/40'
       ]"
     >
       {{ i <= Math.round(rating) ? '★' : '☆' }}
     </span>
-    <span v-if="showValue" class="text-xs text-gray-500 ml-1">
+    <span v-if="showValue" class="text-xs text-muted ml-1">
       {{ rating.toFixed(1) }}
     </span>
-    <span v-if="showReviews && reviews > 0" class="text-xs text-[#6B7280]">
+    <span v-if="showReviews && reviews > 0" class="text-xs text-muted">
       ({{ reviews }})
     </span>
   </div>

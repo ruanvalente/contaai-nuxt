@@ -28,34 +28,30 @@ const handleCategoryChange = (category: Category) => {
 </script>
 
 <template>
-  <section class="py-20 bg-primary-200 relative overflow-hidden">
+  <section class="py-20 bg-surface-alt relative overflow-hidden">
     <SharedUiContainer>
       <div class="text-center mb-8">
-        <h2
-          class="text-3xl md:text-4xl font-display font-semibold text-gray-900 mb-4"
-        >
+        <h2 class="text-3xl md:text-4xl font-display font-semibold text-highlight mb-4">
           Obras em Destaque
         </h2>
-        <p class="text-gray-700 max-w-xl mx-auto">
+        <p class="text-muted max-w-xl mx-auto">
           Explore as contribuições mais recentes da nossa comunidade literária
         </p>
       </div>
 
       <div class="flex justify-center mb-8">
         <div class="flex flex-wrap gap-2 justify-center">
-          <button
+          <UBadge
             v-for="category in CATEGORIES"
             :key="category"
+            :color="selectedCategory === category ? 'primary' : 'neutral'"
+            :variant="selectedCategory === category ? 'solid' : 'subtle'"
+            size="lg"
+            class="cursor-pointer"
             @click="handleCategoryChange(category)"
-            :class="[
-              'px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
-              selectedCategory === category
-                ? 'bg-accent-500 text-white'
-                : 'bg-primary-100 text-gray-700 hover:bg-primary-300',
-            ]"
           >
             {{ category }}
-          </button>
+          </UBadge>
         </div>
       </div>
 
@@ -87,7 +83,7 @@ const handleCategoryChange = (category: Category) => {
         v-else
         class="flex items-center justify-center gap-4 md:gap-8 overflow-x-auto pb-8 px-4 scrollbar-hide"
       >
-        <p class="text-gray-500">
+        <p class="text-muted">
           {{
             selectedCategory === "All"
               ? "Nenhum livro encontrado"
@@ -97,13 +93,12 @@ const handleCategoryChange = (category: Category) => {
       </div>
 
       <div v-if="books.length > 0" class="mt-12 text-center">
-        <NuxtLink
+        <UButton
           to="/discover/explore"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-accent-500 text-white rounded-full font-medium hover:bg-accent-600 transition-colors"
-        >
-          Ver todos os livros
-          <span>→</span>
-        </NuxtLink>
+          label="Ver todos os livros"
+          icon="i-lucide-arrow-right"
+          class="px-6 py-3"
+        />
       </div>
     </SharedUiContainer>
   </section>
